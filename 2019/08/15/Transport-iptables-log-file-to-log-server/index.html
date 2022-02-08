@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Transport iptables log file to log server - YeeTiao 通往未知領域的路</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ObjectiveSetting iptables log function in log client,and transport log file to log server.Deploy LogAnalyzer on log server. System environmentAll System use CentOS 7.6  R1(Network Adapter *2) log serv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transport iptables log file to log server">
+<meta property="og:url" content="http://example.com/2019/08/15/Transport-iptables-log-file-to-log-server/index.html">
+<meta property="og:site_name" content="YeeTiao 通往未知領域的路">
+<meta property="og:description" content="ObjectiveSetting iptables log function in log client,and transport log file to log server.Deploy LogAnalyzer on log server. System environmentAll System use CentOS 7.6  R1(Network Adapter *2) log serv">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/30yGy6y.png">
+<meta property="og:image" content="https://i.imgur.com/Cmerkeh.png">
+<meta property="og:image" content="https://i.imgur.com/fzN7pEO.png">
+<meta property="article:published_time" content="2019-08-15T08:12:20.000Z">
+<meta property="article:modified_time" content="2022-02-08T09:30:31.107Z">
+<meta property="article:author" content="YeeTiao Chen">
+<meta property="article:tag" content="log">
+<meta property="article:tag" content="rsyslog">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="loganalyzer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/30yGy6y.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <!-- blair add baidu tongji start... @2017.10.03 -->
+<!-- blair add baidu tongji end ! @2017.10.03 -->
+
+<header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo" href="/"></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/archives">文章總覽</a>
+        
+          <a class="main-nav-link" href="/about">關於我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <br>
+    <section id="main" class="outer"><article id="post-Transport-iptables-log-file-to-log-server" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Transport iptables log file to log server
+      <small class=article-detail-date-index>&nbsp; 2019-08-15</small>
+    </h1>
+  
+
+
+        <div class=page-title></div>
+        <br>
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/15/Transport-iptables-log-file-to-log-server/" class="article-date">
+  <time datetime="2019-08-15T08:12:20.000Z" itemprop="datePublished">2019-08-15</time>
+</a>-->
+      <!-- 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%8D%E5%8B%99%E5%BB%BA%E7%BD%AE/">服務建置</a>
+  </div>
+
+--><!-- by blair 160724 -->
+      <!-- by blair
+      
+      -->
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>Setting iptables log function in log client,and transport log file to log server.<br>Deploy LogAnalyzer on log server.</p>
+<h2 id="System-environment"><a href="#System-environment" class="headerlink" title="System environment"></a>System environment</h2><p>All System use CentOS 7.6</p>
+<ol>
+<li>R1(Network Adapter *2)</li>
+<li>log server (in LAN)</li>
+</ol>
+<h2 id="Build-iptables-rules-and-rsyslog-in-R1"><a href="#Build-iptables-rules-and-rsyslog-in-R1" class="headerlink" title="Build iptables rules and rsyslog in R1"></a>Build iptables rules and rsyslog in R1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -i $LAN_INTERFACE -j LOG --log-prefix &quot;INPUT ICMPv4:&quot; --log-level notice</span><br><span class="line">iptables -A INPUT -p tcp -j LOG --log-prefix &quot;INPUT TCP:&quot; --log-level notice</span><br><span class="line">iptables -A INPUT -p udp -j LOG --log-prefix &quot;INPUT UDP:&quot; --log-level notice</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -J LOG --log-level notice --log-prefix &quot;NAT Packet:&quot;</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -J MASQUERADE</span><br></pre></td></tr></table></figure>
+<p>Save log file in /var/log/iptables.log<br>edit /etc/rsyslog.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.* @192.168.0.1:514  //log server ip or FQDN and be a log client</span><br></pre></td></tr></table></figure>
+
+<p>enable ipv4.ip_forward in sysctl.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="Build-rsyslog-in-log-server"><a href="#Build-rsyslog-in-log-server" class="headerlink" title="Build rsyslog in log server"></a>Build rsyslog in log server</h2><p>edit /etc/rsyslog.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#uncommend these lines</span><br><span class="line">$ModLoad imudp</span><br><span class="line">$UDPServerRun 514</span><br><span class="line"></span><br><span class="line">#add these line to allow log client</span><br><span class="line">$AllowedSender UDP,192.168.0.0/24</span><br><span class="line">kern.=notice /var/log/iptables.log  #Save log in file</span><br><span class="line"></span><br><span class="line">*.info;*.!notice;mail.none;authpriv.none;cron.none;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Deploy-LogAnalyzer-in-log-server"><a href="#Deploy-LogAnalyzer-in-log-server" class="headerlink" title="Deploy LogAnalyzer in log server"></a>Deploy LogAnalyzer in log server</h2><p>Install apache2 and php<br>(In this project,php version is 7.3,and defalut version in CentOS 7 is 5.4)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install httpd php</span><br></pre></td></tr></table></figure>
+<p>Recommand：Reboot the computer after finishing install or LogAnalyzer will not install successfully.</p>
+<p>Download LogAnalyzer from official website and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.adiscon.com/loganalyzer/loganalyzer-4.1.7.tar.gz</span><br><span class="line">tar -zxvf loganalyzer-4.1.7.tar.gz</span><br></pre></td></tr></table></figure>
+<p>To show report-images in LogAnalyzer,need to install GD module.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install gd gd-devel php-gd</span><br><span class="line">systemctl restart httpd</span><br></pre></td></tr></table></figure>
+
+<p>Browse $YOUR_SERVER_IP/loganalyzer/src/install.php to install LogAnalyzer.</p>
+<h2 id="Use-MariaDB-MySQL-to-store-log-files-and-use-phpMyAdmin-to-manage"><a href="#Use-MariaDB-MySQL-to-store-log-files-and-use-phpMyAdmin-to-manage" class="headerlink" title="Use MariaDB(MySQL) to store log files , and use phpMyAdmin to manage."></a>Use MariaDB(MySQL) to store log files , and use phpMyAdmin to manage.</h2><p>Install MariaDB and configure</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install mariadb-server php-mysql rsyslog-mysql</span><br><span class="line">mysql_secure_installation</span><br><span class="line">mysql -u root -p  #Login </span><br></pre></td></tr></table></figure>
+
+<p>In this project , phpMyAdmin version is 4.9 , php version need 5.5 or later.<br>Download phpMyAdmin setup file from official website , and extract to /var/www , browse $SERVER_IP/phpmyadmin/setup to set configuration.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p logdb &lt;/usr/share/doc/rsyslog/mysql-createDB.sql #create database</span><br><span class="line">mv config.php config.php.backup   #re-configure</span><br><span class="line">touch config.php</span><br></pre></td></tr></table></figure>
+<p>Edit rsyslog.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#load ommysql module</span><br><span class="line">$ModLoad ommysql</span><br><span class="line">#:ommysql:資料庫IP,資料庫名,使用者名稱,密碼</span><br><span class="line">kern.=notice :ommysql:localhost,logdb,$dbuser,$dbpassword</span><br></pre></td></tr></table></figure>
+
+<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/30yGy6y.png"><br><img src="https://i.imgur.com/Cmerkeh.png"><br><img src="https://i.imgur.com/fzN7pEO.png"></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.netadmin.com.tw/netadmin/zh-tw/feature/899D50D1860F403DB5B138D50D21F43F?page=1">自行架設LogAnalyzer日誌管理伺服器</a><br><a target="_blank" rel="noopener" href="https://www.netadmin.com.tw/netadmin/zh-tw/technology/7FEA19007FA641779EB719E77C50709E">LogAnalyzer日誌分析工具安裝設定詳解</a><br><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/centos-7-install-mariadb-mysql-server-tutorial/">CentOS Linux 7 安裝 MySQL/MariaDB 資料庫教學</a><br><a target="_blank" rel="noopener" href="https://ssorc.tw/1204">rsyslog+mysql+loganalyzer記錄系統log至資料庫並由web介面呈現</a></p>
+
+      
+    
+    </div>
+    
+      <div class="article-toc">
+        <h3>目錄</h3>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Objective"><span class="toc-text">Objective</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-environment"><span class="toc-text">System environment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Build-iptables-rules-and-rsyslog-in-R1"><span class="toc-text">Build iptables rules and rsyslog in R1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Build-rsyslog-in-log-server"><span class="toc-text">Build rsyslog in log server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deploy-LogAnalyzer-in-log-server"><span class="toc-text">Deploy LogAnalyzer in log server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Use-MariaDB-MySQL-to-store-log-files-and-use-phpMyAdmin-to-manage"><span class="toc-text">Use MariaDB(MySQL) to store log files , and use phpMyAdmin to manage.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Screenshot"><span class="toc-text">Screenshot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+    
+      <footer class="article-footer">
+        <!-- <div class="well" style="width:100px; height:30px;"></div>  by blair-->
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%8D%E5%8B%99%E5%BB%BA%E7%BD%AE/">服務建置</a>
+  </div>
+
+ <!-- by blair add 160724-->
+        <!--
+        <div style="width:100px; height:30px;"></div> by blair add 160724
+        -->
+        
+  <div class="article-tag">
+    <a class="article-tag-none-link" href="/tags/log/" rel="tag">log</a><span></span><a class="article-tag-none-link" href="/tags/loganalyzer/" rel="tag">loganalyzer</a><span></span><a class="article-tag-none-link" href="/tags/mysql/" rel="tag">mysql</a><span></span><a class="article-tag-none-link" href="/tags/rsyslog/" rel="tag">rsyslog</a>
+  </div>
+
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Linux Programming I/O Redirection、Pipeline
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/13/ssl-bump/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ssl-bump&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 YeeTiao Chen&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a target="_blank" rel="noopener" href="http://github.com/52binge/hexo-theme-blairos">blairos</a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+      displayMath: [ ['$$','$$']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML,http://myserver.com/MathJax/config/local/local.js">
+</script>
+
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

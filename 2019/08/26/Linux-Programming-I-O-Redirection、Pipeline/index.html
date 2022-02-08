@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux Programming I/O Redirection、Pipeline - YeeTiao 通往未知領域的路</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="輸入、輸出、重新導向標準輸入（STDIN）：代碼表示0，程式執行時所需要的輸入資料。標準輸出（STDOUT）：代碼表示1，程式”正常“執行時所產生的輸出資料。標準錯誤輸出（STDERR）：代碼表示2，程式”錯誤“執行時輸出的訊息。重新導向：改變資料的輸出入方向。 Image source：Piping and Redirection,output，Reading from STDIN in scr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux Programming I&#x2F;O Redirection、Pipeline">
+<meta property="og:url" content="http://example.com/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/index.html">
+<meta property="og:site_name" content="YeeTiao 通往未知領域的路">
+<meta property="og:description" content="輸入、輸出、重新導向標準輸入（STDIN）：代碼表示0，程式執行時所需要的輸入資料。標準輸出（STDOUT）：代碼表示1，程式”正常“執行時所產生的輸出資料。標準錯誤輸出（STDERR）：代碼表示2，程式”錯誤“執行時輸出的訊息。重新導向：改變資料的輸出入方向。 Image source：Piping and Redirection,output，Reading from STDIN in scr">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/CmJfEx1.jpg">
+<meta property="article:published_time" content="2019-08-26T09:38:48.000Z">
+<meta property="article:modified_time" content="2022-02-08T09:41:41.521Z">
+<meta property="article:author" content="YeeTiao Chen">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="bash">
+<meta property="article:tag" content="pipeline">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/CmJfEx1.jpg">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <!-- blair add baidu tongji start... @2017.10.03 -->
+<!-- blair add baidu tongji end ! @2017.10.03 -->
+
+<header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo" href="/"></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/archives">文章總覽</a>
+        
+          <a class="main-nav-link" href="/about">關於我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <br>
+    <section id="main" class="outer"><article id="post-Linux-Programming-I-O-Redirection、Pipeline" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux Programming I/O Redirection、Pipeline
+      <small class=article-detail-date-index>&nbsp; 2019-08-26</small>
+    </h1>
+  
+
+
+        <div class=page-title></div>
+        <br>
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/" class="article-date">
+  <time datetime="2019-08-26T09:38:48.000Z" itemprop="datePublished">2019-08-26</time>
+</a>-->
+      <!-- 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+--><!-- by blair 160724 -->
+      <!-- by blair
+      
+      -->
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="輸入、輸出、重新導向"><a href="#輸入、輸出、重新導向" class="headerlink" title="輸入、輸出、重新導向"></a>輸入、輸出、重新導向</h2><p>標準輸入（STDIN）：代碼表示0，程式執行時所需要的輸入資料。<br>標準輸出（STDOUT）：代碼表示1，程式”正常“執行時所產生的輸出資料。<br>標準錯誤輸出（STDERR）：代碼表示2，程式”錯誤“執行時輸出的訊息。<br>重新導向：改變資料的輸出入方向。</p>
+<p><img src="https://i.imgur.com/CmJfEx1.jpg"><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenchen410/article/details/39138437">Image source：Piping and Redirection,output，Reading from STDIN in script(Linux)</a></p>
+<h2 id="標準輸出-STDOUT"><a href="#標準輸出-STDOUT" class="headerlink" title="標準輸出 STDOUT"></a>標準輸出 STDOUT</h2><p>一般的程式執行結果會顯示在螢幕上，也就是說預設的標準輸出是螢幕。我們可以使用 <code> &gt;</code> 來將標準輸出導向至檔案。<br>語法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N &gt; FILE</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Example：將 ```ls -al``` 輸出內容導向至ls.txt</span><br></pre></td></tr></table></figure>
+<p>ls -al &gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">若當前資料夾中``` ls.txt ```檔案不存在，則為自動生成一個並寫入。</span><br><span class="line">若此檔案存在，則會清除原始內容並寫入```ls -al```輸出資料。</span><br><span class="line">若想要保留原始資料並將輸出內容接續檔案原內容，則可以使用```&gt;&gt;```替換原本的```&gt;```。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls -al &gt;&gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 標準錯誤輸出 STDERR</span><br><span class="line">程式發生錯誤時，錯誤訊息預設也是輸出在螢幕上。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若想要將錯誤訊息輸出至```ls.txt```內，如果下這行command：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">錯誤訊息依然顯示在螢幕，而```ls.txt```也不會寫入錯誤訊息。原因是```&gt;```預設代碼為```1```，此時我們要指定代碼為```2```，也就是指定將輸出錯誤訊息寫入```ls.txt```內。</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt 2&gt; ls.txt<br>cat ls.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若想將標準輸出與標準錯誤輸出的資料一起寫入同個檔案可以這樣寫：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt 2&gt;&amp;1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```2&gt;&amp;1```代表將**標準錯誤輸出**的資料導入**標準輸出**</span><br><span class="line">不要忘記```&gt;```預設為**正常輸出**。</span><br><span class="line">驗證：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt 2&gt;&amp;1<br>cat ls.txt<br>ls: cannot access no_file.txt: No such file or directory<br>touch no_file.txt<br>ls no_file.txt &gt; ls.txt 2&gt;&amp;1<br>cat ls.txt<br>no_file.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">原先無```no_file.txt```此檔案，執行```ls```並將錯誤訊息寫入```ls.txt```，新增```no_file.txt```並再一次執行```ls```，可以看到輸出訊息有所變化且正常輸出與錯誤輸出資料都寫入```ls.txt```內。</span><br><span class="line"></span><br><span class="line">導向語法有許多組合，以下都可以達到將正常輸出與錯誤輸出寫入同一個檔案內。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt 2&gt; ls.txt 1&gt;&amp;2<br>ls no_file.txt &gt;&amp; ls.txt<br>ls no_file.txt &amp;&gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```&gt;&amp;``` ```&amp;&gt;```為將所有輸出導向至檔案。</span><br><span class="line">實用例子：儲存iptables規則至檔案</span><br></pre></td></tr></table></figure>
+<p>iptables-save &gt; iptables.rule</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 標準輸入</span><br><span class="line">需要輸入資料的Linux程式若執行時沒有給予資料的話，預設將會從鍵盤讀取資料</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>cat<br>1<br>1<br>2<br>2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用```&lt;```，將指定的檔案設定為程式的標準輸入</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>cat &lt; ls.txt<br>no_file.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 管線 pipe</span><br><span class="line">若要把兩個或以上的程式輸入出串連起來，可以使用```|```（pipe）。</span><br><span class="line">![](https://i.imgur.com/sN2gQjM.png)</span><br><span class="line">[Image Soruce：鳥哥的 Linux 私房菜 第十章、認識與學習BASH](http://linux.vbird.org/linux_basic/0320bash.php)</span><br><span class="line"></span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls | nl</p>
+<p>1 file1<br>2 file2<br>3 directory3</p>
+<p>```</p>
+<p><code>nl</code>為顯示行數的指令。<br>也就是 <code>ls</code>的輸出透過pipe成為了<code>nl</code>的輸入，達到了可顯示行數的<code>ls</code>功能。</p>
+<h2 id="dev-null"><a href="#dev-null" class="headerlink" title="/dev/null"></a>/dev/null</h2><p>-<br>一個類似垃圾桶的東西，若將輸出指向至此，則所有輸出將會被捨棄掉。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/linux-io-input-output-redirection-operators/">GTW-Linux I/O 輸入與輸出重新導向，基礎概念教學</a></p>
+
+      
+    
+    </div>
+    
+      <div class="article-toc">
+        <h3>目錄</h3>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BC%B8%E5%85%A5%E3%80%81%E8%BC%B8%E5%87%BA%E3%80%81%E9%87%8D%E6%96%B0%E5%B0%8E%E5%90%91"><span class="toc-text">輸入、輸出、重新導向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%99%E6%BA%96%E8%BC%B8%E5%87%BA-STDOUT"><span class="toc-text">標準輸出 STDOUT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dev-null"><span class="toc-text">&#x2F;dev&#x2F;null</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+    
+      <footer class="article-footer">
+        <!-- <div class="well" style="width:100px; height:30px;"></div>  by blair-->
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+ <!-- by blair add 160724-->
+        <!--
+        <div style="width:100px; height:30px;"></div> by blair add 160724
+        -->
+        
+  <div class="article-tag">
+    <a class="article-tag-none-link" href="/tags/Linux/" rel="tag">Linux</a><span></span><a class="article-tag-none-link" href="/tags/bash/" rel="tag">bash</a><span></span><a class="article-tag-none-link" href="/tags/pipeline/" rel="tag">pipeline</a>
+  </div>
+
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/29/DWVA-file-upload-Privilege-Escalation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          DWVA file upload Privilege Escalation
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/15/Transport-iptables-log-file-to-log-server/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Transport iptables log file to log server&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 YeeTiao Chen&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a target="_blank" rel="noopener" href="http://github.com/52binge/hexo-theme-blairos">blairos</a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+      displayMath: [ ['$$','$$']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML,http://myserver.com/MathJax/config/local/local.js">
+</script>
+
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

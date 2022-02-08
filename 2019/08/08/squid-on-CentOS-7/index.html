@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>squid on CentOS 7 - YeeTiao 通往未知領域的路</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="需求Client不用設定 Proxy 伺服器 IP，即可讓client之流量皆經由squid發送，並對一特定網站限制連線，本機系統使用 CentOS 7.6。 系統建置CentOS 7.6(need NetworkAdapter *2) CentOS 7 建置筆記 Enable ipv4_forward 1vim &#x2F;etc&#x2F;sysctl.conf 加入 1net.ipv4.ip_forward&#x3D;1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="squid on CentOS 7">
+<meta property="og:url" content="http://example.com/2019/08/08/squid-on-CentOS-7/index.html">
+<meta property="og:site_name" content="YeeTiao 通往未知領域的路">
+<meta property="og:description" content="需求Client不用設定 Proxy 伺服器 IP，即可讓client之流量皆經由squid發送，並對一特定網站限制連線，本機系統使用 CentOS 7.6。 系統建置CentOS 7.6(need NetworkAdapter *2) CentOS 7 建置筆記 Enable ipv4_forward 1vim &#x2F;etc&#x2F;sysctl.conf 加入 1net.ipv4.ip_forward&#x3D;1">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/0oXUv8O.png">
+<meta property="article:published_time" content="2019-08-08T09:27:36.000Z">
+<meta property="article:modified_time" content="2022-02-08T09:30:48.667Z">
+<meta property="article:author" content="YeeTiao Chen">
+<meta property="article:tag" content="CentOS">
+<meta property="article:tag" content="squid">
+<meta property="article:tag" content="proxy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/0oXUv8O.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <!-- blair add baidu tongji start... @2017.10.03 -->
+<!-- blair add baidu tongji end ! @2017.10.03 -->
+
+<header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo" href="/"></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/archives">文章總覽</a>
+        
+          <a class="main-nav-link" href="/about">關於我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <br>
+    <section id="main" class="outer"><article id="post-squid-on-CentOS-7" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      squid on CentOS 7
+      <small class=article-detail-date-index>&nbsp; 2019-08-08</small>
+    </h1>
+  
+
+
+        <div class=page-title></div>
+        <br>
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/08/squid-on-CentOS-7/" class="article-date">
+  <time datetime="2019-08-08T09:27:36.000Z" itemprop="datePublished">2019-08-08</time>
+</a>-->
+      <!-- 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%8D%E5%8B%99%E5%BB%BA%E7%BD%AE/">服務建置</a>
+  </div>
+
+--><!-- by blair 160724 -->
+      <!-- by blair
+      
+      -->
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>Client不用設定 Proxy 伺服器 IP，即可讓client之流量皆經由squid發送，並對一特定網站限制連線，本機系統使用 CentOS 7.6。</p>
+<h2 id="系統建置"><a href="#系統建置" class="headerlink" title="系統建置"></a>系統建置</h2><p>CentOS 7.6(need NetworkAdapter *2) <a target="_blank" rel="noopener" href="https://hackmd.io/@0zewB80fSB2qjONXd8dXPw/Sk2dmULmB">CentOS 7 建置筆記</a></p>
+<p>Enable ipv4_forward</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+<p>加入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+<p>apply</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -p /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="Squid-Intercept-原理"><a href="#Squid-Intercept-原理" class="headerlink" title="Squid Intercept 原理"></a>Squid Intercept 原理</h2><p>用戶端不需設定proxy相關設定，所有http與https流量由NAT導向至proxy Server，proxy Server將成為LAN與WAN之中間人(squid-in-the-middle)，此一功能除可避免手動設定proxy外，也可提升安全性需求。</p>
+<h3 id="squid-設定"><a href="#squid-設定" class="headerlink" title="squid 設定"></a>squid 設定</h3><p>squid.conf(add in config part )</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">http_port 3128 intercept #for http </span><br><span class="line"></span><br><span class="line">https_prot 3129 intercept ssl-bump /</span><br><span class="line">generate-host-certificates=on dynamic_cert_mem_cache_size=16MB /</span><br><span class="line">cert=/etc/squid/ssl_cert/gss.com.cert /</span><br><span class="line">key=/etc/squid/ssl_cert/myCA.key  #for http</span><br><span class="line"></span><br><span class="line">#Configure SSL Bump </span><br><span class="line">always_direct allow all        #forward all request</span><br><span class="line">acl bump_sites dstdomain &quot;/etc/squid/ssl_cert/bump_sites.txt&quot; #forbid domain</span><br><span class="line">acl step1 at_step SslBump1     #connect client first</span><br><span class="line">ssl_bump peek step1</span><br><span class="line">ssl_bump bump bump_sites</span><br></pre></td></tr></table></figure>
+
+<h2 id="make-certificate-openSSL"><a href="#make-certificate-openSSL" class="headerlink" title="make certificate(openSSL)"></a>make certificate(openSSL)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out myCA.key 2048</span><br><span class="line">openssl req -new -key myCA.key -out gss.com.csr</span><br><span class="line">openssl x509 -req -days 365 -in gss.com.csr -signkey myCA.key -out gss.com.cert</span><br></pre></td></tr></table></figure>
+<p>產生出cert後，client端需匯入此憑證。</p>
+<h2 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h2><p>將LAN端port 80(http)與443(https)流量導向至squid</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -A PREROUTING -i ens37 -p tcp --dport 80 -j REDIRECT --to-port 3128</span><br><span class="line">iptables -t nat -A PREROUTING -i ens37 -p tcp --dport 443 -j REDIRECT --to-port 3129</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE</span><br></pre></td></tr></table></figure>
+
+<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/0oXUv8O.png"></p>
+<h2 id="備忘錄"><a href="#備忘錄" class="headerlink" title="備忘錄"></a>備忘錄</h2><ol>
+<li>CentOS 7 系統有default iptables rules，建議先全部清除。</li>
+<li>當前模式為intercept，若client端指定proxy ip，則流量將被squid forbid，所以當squid為transparent(intercept)mode時，就不應該手動設定proxy ip 。</li>
+<li>要清楚是squid本身擋掉封包，還是iptables。(善用wireshark與access.log)</li>
+<li>SELinux要關閉。</li>
+</ol>
+<h2 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h2><p><a target="_blank" rel="noopener" href="https://wiki.squid-cache.org/ConfigExamples/Intercept/LinuxRedirect#Squid_Configuration_File">wiki squid(NAT REDIRECT)</a><br><a target="_blank" rel="noopener" href="https://wiki.squid-cache.org/ConfigExamples/Intercept/LinuxDnat">wiki squid(DNAT)</a><br><a target="_blank" rel="noopener" href="https://www.agix.com.au/minimal-transparent-squid-proxy-with-ssl-interception-bumping-on-centos-7/">build squid proxy with ssl bumping</a><br><a target="_blank" rel="noopener" href="http://zoufeng.net/2017/09/23/squid-proxy-with-ssl-bump/">squid正向代理</a><br><a target="_blank" rel="noopener" href="http://blog.faq-book.com/?p=5308">acl 設定</a><br><a target="_blank" rel="noopener" href="https://www.zybuluo.com/delight/note/2649">squid SSL相關特性</a><br><a target="_blank" rel="noopener" href="http://www.squid-cache.org/Doc/config/ssl_bump/">Squid configuration directive ssl_bump</a></p>
+
+      
+    
+    </div>
+    
+      <div class="article-toc">
+        <h3>目錄</h3>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82"><span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%B5%B1%E5%BB%BA%E7%BD%AE"><span class="toc-text">系統建置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Squid-Intercept-%E5%8E%9F%E7%90%86"><span class="toc-text">Squid Intercept 原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#squid-%E8%A8%AD%E5%AE%9A"><span class="toc-text">squid 設定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#make-certificate-openSSL"><span class="toc-text">make certificate(openSSL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iptables"><span class="toc-text">iptables</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Screenshot"><span class="toc-text">Screenshot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%82%99%E5%BF%98%E9%8C%84"><span class="toc-text">備忘錄</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="toc-text">參考文獻</span></a></li></ol>
+      </div>
+    
+    
+      <footer class="article-footer">
+        <!-- <div class="well" style="width:100px; height:30px;"></div>  by blair-->
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%8D%E5%8B%99%E5%BB%BA%E7%BD%AE/">服務建置</a>
+  </div>
+
+ <!-- by blair add 160724-->
+        <!--
+        <div style="width:100px; height:30px;"></div> by blair add 160724
+        -->
+        
+  <div class="article-tag">
+    <a class="article-tag-none-link" href="/tags/CentOS/" rel="tag">CentOS</a><span></span><a class="article-tag-none-link" href="/tags/proxy/" rel="tag">proxy</a><span></span><a class="article-tag-none-link" href="/tags/squid/" rel="tag">squid</a>
+  </div>
+
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/13/ssl-bump/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          ssl-bump
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/06/CentOS-7-%E5%9F%BA%E6%9C%AC%E7%92%B0%E5%A2%83%E5%BB%BA%E7%BD%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CentOS 7 基本環境建置&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 YeeTiao Chen&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a target="_blank" rel="noopener" href="http://github.com/52binge/hexo-theme-blairos">blairos</a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+      displayMath: [ ['$$','$$']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML,http://myserver.com/MathJax/config/local/local.js">
+</script>
+
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CentOS 7 基本環境建置 - YeeTiao 通往未知領域的路</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="字型與字型大小1vi .bash_profile  123if    setfont sun12x22 &#x2F;&#x2F;man setfont取得更多說明fi  網路介面設定123nmcli d &#x2F;&#x2F;檢視網路介面啟動狀態nmtui &#x2F;&#x2F;設定程式ip a &#x2F;&#x2F;檢視網路卡當前ip address以及netmask 網路卡設定檔路徑 1&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-**A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS 7 基本環境建置">
+<meta property="og:url" content="http://example.com/2019/08/06/CentOS-7-%E5%9F%BA%E6%9C%AC%E7%92%B0%E5%A2%83%E5%BB%BA%E7%BD%AE/index.html">
+<meta property="og:site_name" content="YeeTiao 通往未知領域的路">
+<meta property="og:description" content="字型與字型大小1vi .bash_profile  123if    setfont sun12x22 &#x2F;&#x2F;man setfont取得更多說明fi  網路介面設定123nmcli d &#x2F;&#x2F;檢視網路介面啟動狀態nmtui &#x2F;&#x2F;設定程式ip a &#x2F;&#x2F;檢視網路卡當前ip address以及netmask 網路卡設定檔路徑 1&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-**A">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2019-08-06T09:36:36.000Z">
+<meta property="article:modified_time" content="2022-02-08T09:38:19.917Z">
+<meta property="article:author" content="YeeTiao Chen">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="CentOS">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <!-- blair add baidu tongji start... @2017.10.03 -->
+<!-- blair add baidu tongji end ! @2017.10.03 -->
+
+<header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo" href="/"></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/archives">文章總覽</a>
+        
+          <a class="main-nav-link" href="/about">關於我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <br>
+    <section id="main" class="outer"><article id="post-CentOS-7-基本環境建置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CentOS 7 基本環境建置
+      <small class=article-detail-date-index>&nbsp; 2019-08-06</small>
+    </h1>
+  
+
+
+        <div class=page-title></div>
+        <br>
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/06/CentOS-7-%E5%9F%BA%E6%9C%AC%E7%92%B0%E5%A2%83%E5%BB%BA%E7%BD%AE/" class="article-date">
+  <time datetime="2019-08-06T09:36:36.000Z" itemprop="datePublished">2019-08-06</time>
+</a>-->
+      <!-- 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%B3%BB%E7%B5%B1%E5%BB%BA%E7%BD%AE/">系統建置</a>
+  </div>
+
+--><!-- by blair 160724 -->
+      <!-- by blair
+      
+      -->
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="字型與字型大小"><a href="#字型與字型大小" class="headerlink" title="字型與字型大小"></a>字型與字型大小</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .bash_profile</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if</span><br><span class="line">    setfont sun12x22 //man setfont取得更多說明</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<h2 id="網路介面設定"><a href="#網路介面設定" class="headerlink" title="網路介面設定"></a>網路介面設定</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nmcli d //檢視網路介面啟動狀態</span><br><span class="line">nmtui //設定程式</span><br><span class="line">ip a //檢視網路卡當前ip address以及netmask</span><br></pre></td></tr></table></figure>
+<p>網路卡設定檔路徑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/sysconfig/network-scripts/ifcfg-**AdapterName**</span><br></pre></td></tr></table></figure>
+
+<h2 id="安裝vim"><a href="#安裝vim" class="headerlink" title="安裝vim"></a>安裝vim</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install vim</span><br></pre></td></tr></table></figure>
+      
+    
+    </div>
+    
+      <div class="article-toc">
+        <h3>目錄</h3>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E5%9E%8B%E8%88%87%E5%AD%97%E5%9E%8B%E5%A4%A7%E5%B0%8F"><span class="toc-text">字型與字型大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B6%B2%E8%B7%AF%E4%BB%8B%E9%9D%A2%E8%A8%AD%E5%AE%9A"><span class="toc-text">網路介面設定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%9Dvim"><span class="toc-text">安裝vim</span></a></li></ol>
+      </div>
+    
+    
+      <footer class="article-footer">
+        <!-- <div class="well" style="width:100px; height:30px;"></div>  by blair-->
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%B3%BB%E7%B5%B1%E5%BB%BA%E7%BD%AE/">系統建置</a>
+  </div>
+
+ <!-- by blair add 160724-->
+        <!--
+        <div style="width:100px; height:30px;"></div> by blair add 160724
+        -->
+        
+  <div class="article-tag">
+    <a class="article-tag-none-link" href="/tags/CentOS/" rel="tag">CentOS</a><span></span><a class="article-tag-none-link" href="/tags/Linux/" rel="tag">Linux</a>
+  </div>
+
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/08/squid-on-CentOS-7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          squid on CentOS 7
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 YeeTiao Chen&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a target="_blank" rel="noopener" href="http://github.com/52binge/hexo-theme-blairos">blairos</a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+      displayMath: [ ['$$','$$']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML,http://myserver.com/MathJax/config/local/local.js">
+</script>
+
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

