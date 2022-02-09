@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Checkmarx：Use REST API login method and monitor connect status - YeeTiao - 將歷史都放在這裡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="How to useOfficial Document：https:&#x2F;&#x2F;checkmarx.atlassian.net&#x2F;wiki&#x2F;spaces&#x2F;KC&#x2F;pages&#x2F;1187774721&#x2F;Using+the+CxSAST+REST+API+v8.6.0+and+up Checkmarx version suggest v8.6.0 and up,use postman to try RESTapi.P">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Checkmarx：Use REST API login method and monitor connect status">
+<meta property="og:url" content="http://example.com/2019/11/01/Checkmarx%EF%BC%9AUse-REST-API-login-method-and-monitor-connect-status/index.html">
+<meta property="og:site_name" content="YeeTiao - 將歷史都放在這裡">
+<meta property="og:description" content="How to useOfficial Document：https:&#x2F;&#x2F;checkmarx.atlassian.net&#x2F;wiki&#x2F;spaces&#x2F;KC&#x2F;pages&#x2F;1187774721&#x2F;Using+the+CxSAST+REST+API+v8.6.0+and+up Checkmarx version suggest v8.6.0 and up,use postman to try RESTapi.P">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2019-11-01T03:17:50.000Z">
+<meta property="article:modified_time" content="2022-02-09T03:19:54.020Z">
+<meta property="article:author" content="YeeTiao Chen">
+<meta property="article:tag" content="Checkmarx">
+<meta property="article:tag" content="ELK">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <!-- blair add baidu tongji start... @2017.10.03 -->
+<!-- blair add baidu tongji end ! @2017.10.03 -->
+
+<header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo" href="/"></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/archives">文章總覽</a>
+        
+          <a class="main-nav-link" href="/about">關於我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <br>
+    <section id="main" class="outer"><article id="post-Checkmarx：Use-REST-API-login-method-and-monitor-connect-status" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Checkmarx：Use REST API login method and monitor connect status
+      <small class=article-detail-date-index>&nbsp; 2019-11-01</small>
+    </h1>
+  
+
+
+        <div class=page-title></div>
+        <br>
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/11/01/Checkmarx%EF%BC%9AUse-REST-API-login-method-and-monitor-connect-status/" class="article-date">
+  <time datetime="2019-11-01T03:17:50.000Z" itemprop="datePublished">2019-11-01</time>
+</a>-->
+      <!-- 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Checkmarx/">Checkmarx</a>
+  </div>
+
+--><!-- by blair 160724 -->
+      <!-- by blair
+      
+      -->
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use"></a>How to use</h2><p>Official Document：<a target="_blank" rel="noopener" href="https://checkmarx.atlassian.net/wiki/spaces/KC/pages/1187774721/Using+the+CxSAST+REST+API+v8.6.0+and+up">https://checkmarx.atlassian.net/wiki/spaces/KC/pages/1187774721/Using+the+CxSAST+REST+API+v8.6.0+and+up</a></p>
+<p>Checkmarx version suggest v8.6.0 and up,use postman to try RESTapi.<br>Postman’s Headers need to configure,follow document steps,and we can get token from first step.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#Configure Headers</span><br><span class="line">Content-Type:application/x-www-form-urlencoded;v=1.0</span><br><span class="line">CxOrigin:cx-jenkins</span><br><span class="line"></span><br><span class="line">#Configure Body</span><br><span class="line">#POST Method</span><br><span class="line">x-www-form-urlencoded</span><br><span class="line">username:YOUR_USERNAME</span><br><span class="line">password:YOUR_PASSWORD</span><br><span class="line">grant_type:password</span><br><span class="line">client_id:resource_owner_client</span><br><span class="line">scope:sast_rest_api</span><br><span class="line">client_secret:014DF517-39D1-4453-B7B3-9930C563627C</span><br></pre></td></tr></table></figure>
+
+<p>And we can take this token to try some function,like get all projects.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#Configure Headers</span><br><span class="line">#GET Method</span><br><span class="line">CxOrigin:cx-jenkins</span><br><span class="line">Authorization:Bearer &#x27;TOKEN(No quote)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Notice：POST or GET method and headers must be right.</strong></p>
+<h2 id="Heartbeat-monitor"><a href="#Heartbeat-monitor" class="headerlink" title="Heartbeat monitor"></a>Heartbeat monitor</h2><p>Official Document:<br><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/beats/heartbeat/current/configuration-heartbeat-options.html">https://www.elastic.co/guide/en/beats/heartbeat/current/configuration-heartbeat-options.html</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- type: http</span><br><span class="line">  schedule: &#x27;@every 10s&#x27;</span><br><span class="line">  urls: [&quot;https://localhost/cxrestapi/auth/login&quot;]</span><br><span class="line">  check.request:</span><br><span class="line">    method: POST</span><br><span class="line">    headers:</span><br><span class="line">      &#x27;Content-Type&#x27;: &#x27;application/x-www-form-urlencoded;v=1.0&#x27;</span><br><span class="line">      &#x27;CxOrigin&#x27; : &#x27;cx-jenkins&#x27;</span><br><span class="line">    body: </span><br><span class="line">      &#x27;&#123;&quot;username&quot;:&quot;CxUsername&quot;,&quot;password&quot;:&quot;CxPassword&quot;&#125;&#x27;</span><br><span class="line">  check.response:</span><br><span class="line">    status: [200,500,503]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Notice：In body,because our request data is JSON,so we need to set body data to json format</strong></p>
+<p>We can set more options in <code>check.response.status</code>not 200 but 500,503 etc.</p>
+
+      
+    
+    </div>
+    
+      <div class="article-toc">
+        <h3>目錄</h3>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-use"><span class="toc-text">How to use</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Heartbeat-monitor"><span class="toc-text">Heartbeat monitor</span></a></li></ol>
+      </div>
+    
+    
+      <footer class="article-footer">
+        <!-- <div class="well" style="width:100px; height:30px;"></div>  by blair-->
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Checkmarx/">Checkmarx</a>
+  </div>
+
+ <!-- by blair add 160724-->
+        <!--
+        <div style="width:100px; height:30px;"></div> by blair add 160724
+        -->
+        
+  <div class="article-tag">
+    <a class="article-tag-none-link" href="/tags/Checkmarx/" rel="tag">Checkmarx</a><span></span><a class="article-tag-none-link" href="/tags/ELK/" rel="tag">ELK</a>
+  </div>
+
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/07/%E5%BE%9E-0-%E9%96%8B%E5%A7%8B%EF%BC%8C%E7%94%A8-Hexo-%E6%90%AD%E9%85%8D-GitHub-Pages-%E8%A3%BD%E4%BD%9C%E9%83%A8%E8%90%BD%E6%A0%BC-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          從 0 開始，用 Hexo 搭配 GitHub Pages 製作部落格 2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/31/Flutter%EF%BC%9AStateful-Stateless-Key-Context/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Flutter：Stateful, Stateless, Key, Context&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 YeeTiao Chen&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a target="_blank" rel="noopener" href="http://github.com/52binge/hexo-theme-blairos">blairos</a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+      displayMath: [ ['$$','$$']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML,http://myserver.com/MathJax/config/local/local.js">
+</script>
+
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

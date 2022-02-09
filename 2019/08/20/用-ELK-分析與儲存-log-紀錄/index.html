@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>用 ELK 分析與儲存 log 紀錄 - YeeTiao - 將歷史都放在這裡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="PrefaceBefore, we installed and configured the rsyslog , MySQL and LogAnalyzer.Now we use anothor tools to help us collect logs , and get better statistics. ObjectiveDeploy the ELK and get statistics">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 ELK 分析與儲存 log 紀錄">
+<meta property="og:url" content="http://example.com/2019/08/20/%E7%94%A8-ELK-%E5%88%86%E6%9E%90%E8%88%87%E5%84%B2%E5%AD%98-log-%E7%B4%80%E9%8C%84/index.html">
+<meta property="og:site_name" content="YeeTiao - 將歷史都放在這裡">
+<meta property="og:description" content="PrefaceBefore, we installed and configured the rsyslog , MySQL and LogAnalyzer.Now we use anothor tools to help us collect logs , and get better statistics. ObjectiveDeploy the ELK and get statistics">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/wEvXFnC.png">
+<meta property="og:image" content="https://i.imgur.com/dGhGovD.png">
+<meta property="article:published_time" content="2019-08-20T03:25:49.000Z">
+<meta property="article:modified_time" content="2022-02-09T03:28:29.685Z">
+<meta property="article:author" content="YeeTiao Chen">
+<meta property="article:tag" content="ELK">
+<meta property="article:tag" content="log">
+<meta property="article:tag" content="CentOS 7">
+<meta property="article:tag" content="Filebeat">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/wEvXFnC.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <!-- blair add baidu tongji start... @2017.10.03 -->
+<!-- blair add baidu tongji end ! @2017.10.03 -->
+
+<header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo" href="/"></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/archives">文章總覽</a>
+        
+          <a class="main-nav-link" href="/about">關於我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <br>
+    <section id="main" class="outer"><article id="post-用-ELK-分析與儲存-log-紀錄" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      用 ELK 分析與儲存 log 紀錄
+      <small class=article-detail-date-index>&nbsp; 2019-08-20</small>
+    </h1>
+  
+
+
+        <div class=page-title></div>
+        <br>
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/20/%E7%94%A8-ELK-%E5%88%86%E6%9E%90%E8%88%87%E5%84%B2%E5%AD%98-log-%E7%B4%80%E9%8C%84/" class="article-date">
+  <time datetime="2019-08-20T03:25:49.000Z" itemprop="datePublished">2019-08-20</time>
+</a>-->
+      <!-- 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ELK/">ELK</a>
+  </div>
+
+--><!-- by blair 160724 -->
+      <!-- by blair
+      
+      -->
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>Before, we installed and configured the rsyslog , MySQL and LogAnalyzer.<br>Now we use anothor tools to help us collect logs , and get better statistics.</p>
+<h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>Deploy the ELK and get statistics to analyze logs.</p>
+<h2 id="System-environvent"><a href="#System-environvent" class="headerlink" title="System environvent"></a>System environvent</h2><p><a target="_blank" rel="noopener" href="https://hackmd.io/@0zewB80fSB2qjONXd8dXPw/rkGmm-WNH">Transport iptables log file to log server</a><br>Same environment in this note,and install the ELK in log server.</p>
+<h2 id="Install-ELK"><a href="#Install-ELK" class="headerlink" title="Install ELK"></a>Install ELK</h2><p>Install Java-OpenSDK</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java</span><br></pre></td></tr></table></figure>
+
+<p>Download <strong>ElasticSearch</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">cd elasticsearch</span><br><span class="line">bin/elasticsearch  #run to install</span><br></pre></td></tr></table></figure>
+<p>modify config file from config/elasticsearch.yml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cluster.name: log-elasticsearch</span><br><span class="line">network.host: $SERVER_IP</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.seed_hosts:[&quot;127.0.0.1&quot;,&quot;[::1]&quot;,&quot;[$SERVER_IP]&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>Download <strong>Kibana</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf kibana-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">cd kibana/config</span><br><span class="line">vim kibana.yml</span><br></pre></td></tr></table></figure>
+
+<p>modify config file from config/kibana.yml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.port: 5601</span><br><span class="line">server.host: $SERVER_NAME</span><br><span class="line">elasticsearch.hosts: [&quot;http://$elasticsearch_SERVER_IP:9200&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>Download <strong>Logstash</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/logstash/logstash-7.3.0.tar.gz</span><br><span class="line">tar -zxvf logstash-7.3.0.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="Transport-method"><a href="#Transport-method" class="headerlink" title="Transport method"></a>Transport method</h2><h3 id="Transport-rsyslog-log-files-through-LogStash"><a href="#Transport-rsyslog-log-files-through-LogStash" class="headerlink" title="Transport rsyslog log files through LogStash"></a>Transport rsyslog log files through LogStash</h3><p>Logstash config file</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">imput&#123;</span><br><span class="line">    syslog&#123;</span><br><span class="line">        port =&gt; &quot;514&quot; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">output&#123;</span><br><span class="line">    elasticsearch&#123;hosts =&gt; [&quot;$Elasticsearch_SERVER:9200&quot;]&#125;</span><br><span class="line">    stdout&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>start up logstash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/logstash -f config/syslog.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="Transport-log-files-through-Filebeat"><a href="#Transport-log-files-through-Filebeat" class="headerlink" title="Transport log files through Filebeat"></a>Transport log files through Filebeat</h3><p>Download filebeat plugin</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf filebeat-7.3.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h3 id="Modify-filebeat-config-from-filebeat-yml"><a href="#Modify-filebeat-config-from-filebeat-yml" class="headerlink" title="Modify filebeat config from ./filebeat.yml"></a>Modify filebeat config from ./filebeat.yml</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#=====Filebeat inputs=====</span><br><span class="line">filebeat.inputs:</span><br><span class="line">    -type: log</span><br><span class="line">    enabled: true</span><br><span class="line">    paths:</span><br><span class="line">        -/var/log/*.log</span><br><span class="line">        </span><br><span class="line">#=====Kibana=====</span><br><span class="line">setup.kibana:</span><br><span class="line">    host: &quot;192.168.0.250:5601&quot;</span><br><span class="line"></span><br><span class="line">#=====Outputs=====</span><br><span class="line"></span><br><span class="line">#-----ElasticSearch output-----</span><br><span class="line">output.elasticsearch:</span><br><span class="line">    hosts: [&quot;$elasticsearch_SERVER_IP:9200&quot;]</span><br></pre></td></tr></table></figure>
+<p>Browse kibana/discover then can show log in screen.</p>
+<h2 id="Some-Errors"><a href="#Some-Errors" class="headerlink" title="Some Errors"></a>Some Errors</h2><h3 id="Insufficient-space-for-shared-memory-file"><a href="#Insufficient-space-for-shared-memory-file" class="headerlink" title="Insufficient space for shared memory file"></a>Insufficient space for shared memory file</h3><p>clean the disk.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br><span class="line">du -h -x --max-depth=1</span><br><span class="line">ps aux</span><br><span class="line">kill</span><br></pre></td></tr></table></figure>
+
+<h3 id="Create-Kibana-index-pattern-forbidden"><a href="#Create-Kibana-index-pattern-forbidden" class="headerlink" title="Create Kibana index pattern forbidden"></a>Create Kibana index pattern forbidden</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/wEvXFnC.png"></p>
+<center>log from rsyslog client through logstash</center>
+
+<p><img src="https://i.imgur.com/dGhGovD.png"></p>
+<center>log from local through filebeat</center>
+
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/index.html">ELK 常用架构及使用场景介绍</a><br><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk/index.html">集中式日志系统 ELK 协议栈详解</a><br><a target="_blank" rel="noopener" href="http://my-fish-it.blogspot.com/2017/06/ss-elk-max-file-descriptors-4096-for.html">ELK 錯誤訊息 max file descriptors [4096] for elasticsearch process is too low</a><br><a target="_blank" rel="noopener" href="https://juejin.im/post/5cb81bf4e51d4578c35e727d">elasticsearch 7 单机配置</a></p>
+
+      
+    
+    </div>
+    
+      <div class="article-toc">
+        <h3>目錄</h3>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Preface"><span class="toc-text">Preface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Objective"><span class="toc-text">Objective</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-environvent"><span class="toc-text">System environvent</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Install-ELK"><span class="toc-text">Install ELK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Transport-method"><span class="toc-text">Transport method</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Transport-rsyslog-log-files-through-LogStash"><span class="toc-text">Transport rsyslog log files through LogStash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Transport-log-files-through-Filebeat"><span class="toc-text">Transport log files through Filebeat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Modify-filebeat-config-from-filebeat-yml"><span class="toc-text">Modify filebeat config from .&#x2F;filebeat.yml</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Some-Errors"><span class="toc-text">Some Errors</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Insufficient-space-for-shared-memory-file"><span class="toc-text">Insufficient space for shared memory file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-Kibana-index-pattern-forbidden"><span class="toc-text">Create Kibana index pattern forbidden</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Screenshot"><span class="toc-text">Screenshot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+    
+      <footer class="article-footer">
+        <!-- <div class="well" style="width:100px; height:30px;"></div>  by blair-->
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ELK/">ELK</a>
+  </div>
+
+ <!-- by blair add 160724-->
+        <!--
+        <div style="width:100px; height:30px;"></div> by blair add 160724
+        -->
+        
+  <div class="article-tag">
+    <a class="article-tag-none-link" href="/tags/CentOS-7/" rel="tag">CentOS 7</a><span></span><a class="article-tag-none-link" href="/tags/ELK/" rel="tag">ELK</a><span></span><a class="article-tag-none-link" href="/tags/Filebeat/" rel="tag">Filebeat</a><span></span><a class="article-tag-none-link" href="/tags/log/" rel="tag">log</a>
+  </div>
+
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Linux Programming I/O Redirection、Pipeline
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/15/Transport-iptables-log-file-to-log-server/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Transport iptables log file to log server&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 YeeTiao Chen&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a target="_blank" rel="noopener" href="http://github.com/52binge/hexo-theme-blairos">blairos</a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+      displayMath: [ ['$$','$$']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML,http://myserver.com/MathJax/config/local/local.js">
+</script>
+
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

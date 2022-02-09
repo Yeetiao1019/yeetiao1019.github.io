@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   
-  <title>YeeTiao 通往未知領域的路</title>
+  <title>YeeTiao - 將歷史都放在這裡</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="YeeTiao 通往未知領域的路">
+<meta property="og:title" content="YeeTiao - 將歷史都放在這裡">
 <meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="YeeTiao 通往未知領域的路">
+<meta property="og:site_name" content="YeeTiao - 將歷史都放在這裡">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:author" content="YeeTiao Chen">
 <meta name="twitter:card" content="summary">
@@ -194,6 +194,76 @@
 
 
     
+      <article id="post-從-0-開始，用-Hexo-搭配-GitHub-Pages-製作部落格-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2022/02/07/%E5%BE%9E-0-%E9%96%8B%E5%A7%8B%EF%BC%8C%E7%94%A8-Hexo-%E6%90%AD%E9%85%8D-GitHub-Pages-%E8%A3%BD%E4%BD%9C%E9%83%A8%E8%90%BD%E6%A0%BC-1/"><strong>從 0 開始，用 Hexo 搭配 GitHub Pages 製作部落格 1</strong></a>
+      <small class=article-date-index>&nbsp; 2022-02-07</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2022/02/07/%E5%BE%9E-0-%E9%96%8B%E5%A7%8B%EF%BC%8C%E7%94%A8-Hexo-%E6%90%AD%E9%85%8D-GitHub-Pages-%E8%A3%BD%E4%BD%9C%E9%83%A8%E8%90%BD%E6%A0%BC-1/" class="article-date">
+  <time datetime="2022-02-07T09:44:16.000Z" itemprop="datePublished">2022-02-07</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub-Page</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>終於開始動工自己的部落格，預計放在 GitHub Pages 上，使用最常見的 Hexo 框架，也當作是自己的 site project 以及第一篇長篇的紀錄文章，順便練習寫文章的能力，我將會把所有安裝方法、設定、部屬等等的事情記錄下來。</p>
+<h2 id="關於-Hexo"><a href="#關於-Hexo" class="headerlink" title="關於 Hexo"></a>關於 Hexo</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/">Hexo 官網</a></p>
+<p>Hexo 是一個知名且用戶數非常多的部落格網頁框架，並且支持 Markdown（這點我非常喜歡），可用 node.js 來做套件管理，中文文章相當多，除非太獨特的坑以外，基本上中文的教學文章就夠用了。</p>
+<h2 id="GitHub-Pages"><a href="#GitHub-Pages" class="headerlink" title="GitHub Pages"></a>GitHub Pages</h2><p>GitHub Pages 是 GitHub 官方的免費<strong>靜態網頁</strong>代管服務，因為只支援靜態網頁，所以只能放置 html、js、css 等檔案，舉凡 php、.NET 等放上來是不會發生任何作用的</p>
+<h2 id="建立-GitHub-Pages-Repository"><a href="#建立-GitHub-Pages-Repository" class="headerlink" title="建立 GitHub Pages Repository"></a>建立 GitHub Pages Repository</h2><p>若要使用 GitHub Pages 服務，得先在個人的 GitHub 帳號中，建立一個名稱為 <code>&#123;UserName&#125;.github.io</code> 的 Repository，然後就結束了，就是這麼簡單！<br>就等著將網頁相關檔案上傳上去就好。</p>
+<p><img src="https://i.imgur.com/JBxBeLS.png"><br>建立 GitHub Pages Repository</p>
+<p><img src="https://i.imgur.com/BbHyxMZ.png"><br>push 一個 html 檔來測試看看吧</p>
+<p><img src="https://i.imgur.com/dnlLaCN.png"><br>輸入 <a target="_blank" rel="noopener" href="https://username.github.io/">https://username.github.io</a> 來看看有沒有成功</p>
+<h2 id="安裝-Hexo"><a href="#安裝-Hexo" class="headerlink" title="安裝 Hexo"></a>安裝 Hexo</h2><p>依照官方文件的步驟進行，我們需要在電腦上安裝 Node.js 與 Git。<br>安裝完 Node.js 後，執行下列指令來安裝 hexo 的 cli 套件。<br><code>npm install -g hexo-cli</code></p>
+<p>至此我們已經完成了開發環境的建置，接下來我們要使用 Hexo 來建置部落格。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/">Hexo 官網</a><br><a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">Node.js 官網</a><br><a target="_blank" rel="noopener" href="https://medium.com/%E9%80%B2%E6%93%8A%E7%9A%84-git-git-git/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B-%E7%94%A8github-pages-%E4%B8%8A%E5%82%B3%E9%9D%9C%E6%85%8B%E7%B6%B2%E7%AB%99-fa2ae83e6276">從零開始: 用github pages 上傳靜態網站</a></p>
+<hr>
+<h6 id="tags-部落格-Hexo-GitHub-Page-紀錄"><a href="#tags-部落格-Hexo-GitHub-Page-紀錄" class="headerlink" title="tags: 部落格 Hexo GitHub Page 紀錄"></a>tags: <code>部落格</code> <code>Hexo</code> <code>GitHub Page</code> <code>紀錄</code></h6>
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-從-0-開始，用-Hexo-搭配-GitHub-Pages-製作部落格-2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -280,7 +350,7 @@
 
 
     
-      <article id="post-從-0-開始，用-Hexo-搭配-GitHub-Pages-製作部落格-1" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-Checkmarx：Use-REST-API-login-method-and-monitor-connect-status" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -288,8 +358,8 @@
         
   
     <myh11 itemprop="name">
-      <a class="article-title-index" href="/2022/02/07/%E5%BE%9E-0-%E9%96%8B%E5%A7%8B%EF%BC%8C%E7%94%A8-Hexo-%E6%90%AD%E9%85%8D-GitHub-Pages-%E8%A3%BD%E4%BD%9C%E9%83%A8%E8%90%BD%E6%A0%BC-1/"><strong>從 0 開始，用 Hexo 搭配 GitHub Pages 製作部落格 1</strong></a>
-      <small class=article-date-index>&nbsp; 2022-02-07</small>
+      <a class="article-title-index" href="/2019/11/01/Checkmarx%EF%BC%9AUse-REST-API-login-method-and-monitor-connect-status/"><strong>Checkmarx：Use REST API login method and monitor connect status</strong></a>
+      <small class=article-date-index>&nbsp; 2019-11-01</small>
       <!--<a>
       <div = post.date  </div>
       </a>-->
@@ -302,12 +372,12 @@
       </header>
     
     <div class="article-meta">
-      <!--<a href="/2022/02/07/%E5%BE%9E-0-%E9%96%8B%E5%A7%8B%EF%BC%8C%E7%94%A8-Hexo-%E6%90%AD%E9%85%8D-GitHub-Pages-%E8%A3%BD%E4%BD%9C%E9%83%A8%E8%90%BD%E6%A0%BC-1/" class="article-date">
-  <time datetime="2022-02-07T09:44:16.000Z" itemprop="datePublished">2022-02-07</time>
+      <!--<a href="/2019/11/01/Checkmarx%EF%BC%9AUse-REST-API-login-method-and-monitor-connect-status/" class="article-date">
+  <time datetime="2019-11-01T03:17:50.000Z" itemprop="datePublished">2019-11-01</time>
 </a>-->
       <!--
   <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/GitHub-Page/">GitHub-Page</a>
+    <a class="article-category-index-link" href="/categories/Checkmarx/">Checkmarx</a>
   </div>
 
 -->
@@ -318,19 +388,87 @@
 	
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>終於開始動工自己的部落格，預計放在 GitHub Pages 上，使用最常見的 Hexo 框架，也當作是自己的 site project 以及第一篇長篇的紀錄文章，順便練習寫文章的能力，我將會把所有安裝方法、設定、部屬等等的事情記錄下來。</p>
-<h2 id="關於-Hexo"><a href="#關於-Hexo" class="headerlink" title="關於 Hexo"></a>關於 Hexo</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/">Hexo 官網</a></p>
-<p>Hexo 是一個知名且用戶數非常多的部落格網頁框架，並且支持 Markdown（這點我非常喜歡），可用 node.js 來做套件管理，中文文章相當多，除非太獨特的坑以外，基本上中文的教學文章就夠用了。</p>
-<h2 id="GitHub-Pages"><a href="#GitHub-Pages" class="headerlink" title="GitHub Pages"></a>GitHub Pages</h2><p>GitHub Pages 是 GitHub 官方的免費<strong>靜態網頁</strong>代管服務，因為只支援靜態網頁，所以只能放置 html、js、css 等檔案，舉凡 php、.NET 等放上來是不會發生任何作用的</p>
-<h2 id="建立-GitHub-Pages-Repository"><a href="#建立-GitHub-Pages-Repository" class="headerlink" title="建立 GitHub Pages Repository"></a>建立 GitHub Pages Repository</h2><p>若要使用 GitHub Pages 服務，得先在個人的 GitHub 帳號中，建立一個名稱為 <code>&#123;UserName&#125;.github.io</code> 的 Repository，然後就結束了，就是這麼簡單！<br>就等著將網頁相關檔案上傳上去就好。</p>
-<p><img src="https://i.imgur.com/JBxBeLS.png"><br>建立 GitHub Pages Repository</p>
-<p><img src="https://i.imgur.com/BbHyxMZ.png"><br>push 一個 html 檔來測試看看吧</p>
-<p><img src="https://i.imgur.com/dnlLaCN.png"><br>輸入 <a target="_blank" rel="noopener" href="https://username.github.io/">https://username.github.io</a> 來看看有沒有成功</p>
-<h2 id="安裝-Hexo"><a href="#安裝-Hexo" class="headerlink" title="安裝 Hexo"></a>安裝 Hexo</h2><p>依照官方文件的步驟進行，我們需要在電腦上安裝 Node.js 與 Git。<br>安裝完 Node.js 後，執行下列指令來安裝 hexo 的 cli 套件。<br><code>npm install -g hexo-cli</code></p>
-<p>至此我們已經完成了開發環境的建置，接下來我們要使用 Hexo 來建置部落格。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/">Hexo 官網</a><br><a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">Node.js 官網</a><br><a target="_blank" rel="noopener" href="https://medium.com/%E9%80%B2%E6%93%8A%E7%9A%84-git-git-git/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B-%E7%94%A8github-pages-%E4%B8%8A%E5%82%B3%E9%9D%9C%E6%85%8B%E7%B6%B2%E7%AB%99-fa2ae83e6276">從零開始: 用github pages 上傳靜態網站</a></p>
-<hr>
-<h6 id="tags-部落格-Hexo-GitHub-Page-紀錄"><a href="#tags-部落格-Hexo-GitHub-Page-紀錄" class="headerlink" title="tags: 部落格 Hexo GitHub Page 紀錄"></a>tags: <code>部落格</code> <code>Hexo</code> <code>GitHub Page</code> <code>紀錄</code></h6>
+        <h2 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use"></a>How to use</h2><p>Official Document：<a target="_blank" rel="noopener" href="https://checkmarx.atlassian.net/wiki/spaces/KC/pages/1187774721/Using+the+CxSAST+REST+API+v8.6.0+and+up">https://checkmarx.atlassian.net/wiki/spaces/KC/pages/1187774721/Using+the+CxSAST+REST+API+v8.6.0+and+up</a></p>
+<p>Checkmarx version suggest v8.6.0 and up,use postman to try RESTapi.<br>Postman’s Headers need to configure,follow document steps,and we can get token from first step.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#Configure Headers</span><br><span class="line">Content-Type:application/x-www-form-urlencoded;v=1.0</span><br><span class="line">CxOrigin:cx-jenkins</span><br><span class="line"></span><br><span class="line">#Configure Body</span><br><span class="line">#POST Method</span><br><span class="line">x-www-form-urlencoded</span><br><span class="line">username:YOUR_USERNAME</span><br><span class="line">password:YOUR_PASSWORD</span><br><span class="line">grant_type:password</span><br><span class="line">client_id:resource_owner_client</span><br><span class="line">scope:sast_rest_api</span><br><span class="line">client_secret:014DF517-39D1-4453-B7B3-9930C563627C</span><br></pre></td></tr></table></figure>
+
+<p>And we can take this token to try some function,like get all projects.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#Configure Headers</span><br><span class="line">#GET Method</span><br><span class="line">CxOrigin:cx-jenkins</span><br><span class="line">Authorization:Bearer &#x27;TOKEN(No quote)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Notice：POST or GET method and headers must be right.</strong></p>
+<h2 id="Heartbeat-monitor"><a href="#Heartbeat-monitor" class="headerlink" title="Heartbeat monitor"></a>Heartbeat monitor</h2><p>Official Document:<br><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/beats/heartbeat/current/configuration-heartbeat-options.html">https://www.elastic.co/guide/en/beats/heartbeat/current/configuration-heartbeat-options.html</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- type: http</span><br><span class="line">  schedule: &#x27;@every 10s&#x27;</span><br><span class="line">  urls: [&quot;https://localhost/cxrestapi/auth/login&quot;]</span><br><span class="line">  check.request:</span><br><span class="line">    method: POST</span><br><span class="line">    headers:</span><br><span class="line">      &#x27;Content-Type&#x27;: &#x27;application/x-www-form-urlencoded;v=1.0&#x27;</span><br><span class="line">      &#x27;CxOrigin&#x27; : &#x27;cx-jenkins&#x27;</span><br><span class="line">    body: </span><br><span class="line">      &#x27;&#123;&quot;username&quot;:&quot;CxUsername&quot;,&quot;password&quot;:&quot;CxPassword&quot;&#125;&#x27;</span><br><span class="line">  check.response:</span><br><span class="line">    status: [200,500,503]</span><br></pre></td></tr></table></figure>
+
+<p><strong>Notice：In body,because our request data is JSON,so we need to set body data to json format</strong></p>
+<p>We can set more options in <code>check.response.status</code>not 200 but 500,503 etc.</p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
+      <article id="post-Flutter：Stateful-Stateless-Key-Context" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/10/31/Flutter%EF%BC%9AStateful-Stateless-Key-Context/"><strong>Flutter：Stateful, Stateless, Key, Context</strong></a>
+      <small class=article-date-index>&nbsp; 2019-10-31</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/10/31/Flutter%EF%BC%9AStateful-Stateless-Key-Context/" class="article-date">
+  <time datetime="2019-10-31T03:23:37.000Z" itemprop="datePublished">2019-10-31</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Key"><a href="#Key" class="headerlink" title="Key"></a>Key</h2><p>在理解key之前，我們要先釐清stateless與stateful的差異性。</p>
+<p>stateless is <strong>Dataless</strong><br>意味不使用任何資料，例如<strong>圖示、文字</strong>。</p>
+<p>在app運作過程中，不能被更換state，只能build一次，也就是說當app在運行時，stateless無法重新繪製，除非又被初始化一次。<br>常用元件例如：Icon、Chip、Text。<br><a target="_blank" rel="noopener" href="https://youtu.be/t2W_QYq2gqY">https://youtu.be/t2W_QYq2gqY</a></p>
+<p>stateful is <strong>Dataful</strong><br>意味Widget有著資料，例如這篇文章<strong>被按多少次讚</strong>（需要計算資料數），標題字串更改（更改資料）。</p>
+<p>可以在app運行時隨時重新繪製無數次。<br><a target="_blank" rel="noopener" href="https://youtu.be/Agss0J3NmS0">https://youtu.be/Agss0J3NmS0</a></p>
+<p>這部影片展示stateless與stateful實例，可以看到stateless必須hot reload才會更新畫面widget。<br><a target="_blank" rel="noopener" href="https://youtu.be/njfj24njaVI">https://youtu.be/njfj24njaVI</a></p>
+<p>key將會用於保留元件狀態，例如滾動後的位置。<br>key並不會運用於stateless，而是在stateful。<br>假設兩個畫面有兩個狀態拉桿，而使用者想要在其中一個頁面的拉桿設為1時，另一個頁面中的拉桿也同時設為1，此時使用GlobalKey。<br>Key類型介紹看下面影片：<br><a target="_blank" rel="noopener" href="https://youtu.be/kn0EOS-ZiIc?t=413">https://youtu.be/kn0EOS-ZiIc?t=413</a></p>
+<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>context類似標籤，一個widget有一個context，並且代表著該widget在widget tree中的位置。<br>state與context是緊扣在一起的，且是永久關係，state不會去改變context。<br><img src="https://i.imgur.com/GXjwsEu.png"></p>
+<p>Source：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018863761">https://segmentfault.com/a/1190000018863761</a></p>
+
       
     </div>
 	
@@ -411,6 +549,84 @@
 <p><code>substr( $uploaded_name, strrpos( $uploaded_name, &#39;.&#39; ) + 1);</code>首先取得<code>&#39;.&#39;</code>最後出現的位置後再+1，以此數值使用<code>substr</code>函數取得該位置起始的字串。<br>也就是說<code>$uploaded_ext</code>會是一個為副檔名的字串（like ‘jpg’）。</p>
 <p><code>getimagesize()</code>此函數將取得圖像的大小與相關訊息。<br>Example：<br><code>Array ( [0] =&gt; 105 [1] =&gt; 60 [2] =&gt; 3 [3] =&gt; width=&quot;105&quot; height=&quot;60&quot; [bits] =&gt; 8 [mime] =&gt; image/png )</code></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2549">Linux 反弹shell（二）反弹shell的本质</a><br><a target="_blank" rel="noopener" href="https://legoc.github.io/2018/09/20/Linux%E6%8F%90%E6%9D%83%E6%80%9D%E8%B7%AF/">Linux提权思路+实战</a><br><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/188852.html">记一次曲折的Linux提权</a></p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
+      <article id="post-Flutter：Integrate-the-Flutter-project-and-Firebase" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/28/Flutter%EF%BC%9AIntegrate-the-Flutter-project-and-Firebase/"><strong>Flutter：Integrate the Flutter project and Firebase</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-28</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/28/Flutter%EF%BC%9AIntegrate-the-Flutter-project-and-Firebase/" class="article-date">
+  <time datetime="2019-08-28T03:20:42.000Z" itemprop="datePublished">2019-08-28</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Open-Xcode"><a href="#Open-Xcode" class="headerlink" title="Open Xcode"></a>Open Xcode</h2><p>當Flutter專案要與Firebase專案進行串聯時，我們必須在Firebase填入iOS Bundle ID，而這ID需要開啟Xcode來取得。</p>
+<ol>
+<li><p>在Flutter專案已經建立好的前提下，打開Xcode，並點擊<strong>Open another project…</strong><br><img src="https://i.imgur.com/ATJzE1r.png"></p>
+</li>
+<li><p>開啟Flutter中的<strong>Runner.xcodeproj</strong>，路徑為：$flutter_project/ios/Runner.xcodeproj</p>
+</li>
+<li><p>雙擊目錄列的<strong>Runner</strong>，右側即可查看<strong>Bundle Identifier</strong><br><img src="https://i.imgur.com/NP4r1u7.png"></p>
+</li>
+</ol>
+<h2 id="Add-profile-in-Firebase"><a href="#Add-profile-in-Firebase" class="headerlink" title="Add profile in Firebase"></a>Add profile in Firebase</h2><p>欄位輸入完成後即可下載設定檔，並將下載的設定檔放入Xcode專案的根目錄中。<br><img src="https://i.imgur.com/rsLxS3u.png"></p>
+<h2 id="Firebase-SDK"><a href="#Firebase-SDK" class="headerlink" title="Firebase SDK"></a>Firebase SDK</h2><p>跟著網頁步驟進行處理。<br><img src="https://i.imgur.com/4MjcwYn.png"></p>
+<p>在Podfile加入此設定：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Add the Firebase pod for Google Analytics</span><br><span class="line">pod &#x27;Firebase/Analytics&#x27;</span><br><span class="line"></span><br><span class="line"># Add the pods for any other Firebase products you want to use in your app</span><br><span class="line"># For example, to use Firebase Authentication and Cloud Firestore</span><br><span class="line">pod &#x27;Firebase/Auth&#x27;</span><br><span class="line">pod &#x27;Firebase/Firestore&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+
+<p>接著一樣跟著網頁的步驟進行就好<br>最後一個步驟時需要build flutter project完成與firebase的整合。</p>
+<h2 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h2><p>如果<code>import Firebase</code>總是錯誤的話<br>參考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/41709912/error-could-not-build-objective-c-module-firebase">Error: Could not build Objective-C module ‘Firebase’</a></p>
+<p><code>Could not hardlink copy...</code><br>參考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d0004e16c454">XCode Could not hardlink copy</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://youtu.be/13-jNF984C0">Flutter: Firebase Tutorial Part 1 | Auth and Sign in</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.freecodecamp.org/news/how-to-integrate-your-ios-flutter-app-with-firebase-on-macos-6ad08e2714f0/">How to integrate your iOS Flutter App with Firebase on MacOS</a></p>
 
       
     </div>
@@ -522,7 +738,7 @@
 
 
     
-      <article id="post-Transport-iptables-log-file-to-log-server" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-用-ELK-分析與儲存-log-紀錄" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -530,8 +746,8 @@
         
   
     <myh11 itemprop="name">
-      <a class="article-title-index" href="/2019/08/15/Transport-iptables-log-file-to-log-server/"><strong>Transport iptables log file to log server</strong></a>
-      <small class=article-date-index>&nbsp; 2019-08-15</small>
+      <a class="article-title-index" href="/2019/08/20/%E7%94%A8-ELK-%E5%88%86%E6%9E%90%E8%88%87%E5%84%B2%E5%AD%98-log-%E7%B4%80%E9%8C%84/"><strong>用 ELK 分析與儲存 log 紀錄</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-20</small>
       <!--<a>
       <div = post.date  </div>
       </a>-->
@@ -544,12 +760,12 @@
       </header>
     
     <div class="article-meta">
-      <!--<a href="/2019/08/15/Transport-iptables-log-file-to-log-server/" class="article-date">
-  <time datetime="2019-08-15T08:12:20.000Z" itemprop="datePublished">2019-08-15</time>
+      <!--<a href="/2019/08/20/%E7%94%A8-ELK-%E5%88%86%E6%9E%90%E8%88%87%E5%84%B2%E5%AD%98-log-%E7%B4%80%E9%8C%84/" class="article-date">
+  <time datetime="2019-08-20T03:25:49.000Z" itemprop="datePublished">2019-08-20</time>
 </a>-->
       <!--
   <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/%E6%9C%8D%E5%8B%99%E5%BB%BA%E7%BD%AE/">服務建置</a>
+    <a class="article-category-index-link" href="/categories/ELK/">ELK</a>
   </div>
 
 -->
@@ -560,41 +776,49 @@
 	
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>Setting iptables log function in log client,and transport log file to log server.<br>Deploy LogAnalyzer on log server.</p>
-<h2 id="System-environment"><a href="#System-environment" class="headerlink" title="System environment"></a>System environment</h2><p>All System use CentOS 7.6</p>
-<ol>
-<li>R1(Network Adapter *2)</li>
-<li>log server (in LAN)</li>
-</ol>
-<h2 id="Build-iptables-rules-and-rsyslog-in-R1"><a href="#Build-iptables-rules-and-rsyslog-in-R1" class="headerlink" title="Build iptables rules and rsyslog in R1"></a>Build iptables rules and rsyslog in R1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -i $LAN_INTERFACE -j LOG --log-prefix &quot;INPUT ICMPv4:&quot; --log-level notice</span><br><span class="line">iptables -A INPUT -p tcp -j LOG --log-prefix &quot;INPUT TCP:&quot; --log-level notice</span><br><span class="line">iptables -A INPUT -p udp -j LOG --log-prefix &quot;INPUT UDP:&quot; --log-level notice</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -J LOG --log-level notice --log-prefix &quot;NAT Packet:&quot;</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -J MASQUERADE</span><br></pre></td></tr></table></figure>
-<p>Save log file in /var/log/iptables.log<br>edit /etc/rsyslog.conf</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.* @192.168.0.1:514  //log server ip or FQDN and be a log client</span><br></pre></td></tr></table></figure>
+        <h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>Before, we installed and configured the rsyslog , MySQL and LogAnalyzer.<br>Now we use anothor tools to help us collect logs , and get better statistics.</p>
+<h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>Deploy the ELK and get statistics to analyze logs.</p>
+<h2 id="System-environvent"><a href="#System-environvent" class="headerlink" title="System environvent"></a>System environvent</h2><p><a target="_blank" rel="noopener" href="https://hackmd.io/@0zewB80fSB2qjONXd8dXPw/rkGmm-WNH">Transport iptables log file to log server</a><br>Same environment in this note,and install the ELK in log server.</p>
+<h2 id="Install-ELK"><a href="#Install-ELK" class="headerlink" title="Install ELK"></a>Install ELK</h2><p>Install Java-OpenSDK</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java</span><br></pre></td></tr></table></figure>
 
-<p>enable ipv4.ip_forward in sysctl.conf</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
+<p>Download <strong>ElasticSearch</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">cd elasticsearch</span><br><span class="line">bin/elasticsearch  #run to install</span><br></pre></td></tr></table></figure>
+<p>modify config file from config/elasticsearch.yml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cluster.name: log-elasticsearch</span><br><span class="line">network.host: $SERVER_IP</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.seed_hosts:[&quot;127.0.0.1&quot;,&quot;[::1]&quot;,&quot;[$SERVER_IP]&quot;]</span><br></pre></td></tr></table></figure>
 
-<h2 id="Build-rsyslog-in-log-server"><a href="#Build-rsyslog-in-log-server" class="headerlink" title="Build rsyslog in log server"></a>Build rsyslog in log server</h2><p>edit /etc/rsyslog.conf</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#uncommend these lines</span><br><span class="line">$ModLoad imudp</span><br><span class="line">$UDPServerRun 514</span><br><span class="line"></span><br><span class="line">#add these line to allow log client</span><br><span class="line">$AllowedSender UDP,192.168.0.0/24</span><br><span class="line">kern.=notice /var/log/iptables.log  #Save log in file</span><br><span class="line"></span><br><span class="line">*.info;*.!notice;mail.none;authpriv.none;cron.none;</span><br></pre></td></tr></table></figure>
+<p>Download <strong>Kibana</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf kibana-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">cd kibana/config</span><br><span class="line">vim kibana.yml</span><br></pre></td></tr></table></figure>
 
-<h2 id="Deploy-LogAnalyzer-in-log-server"><a href="#Deploy-LogAnalyzer-in-log-server" class="headerlink" title="Deploy LogAnalyzer in log server"></a>Deploy LogAnalyzer in log server</h2><p>Install apache2 and php<br>(In this project,php version is 7.3,and defalut version in CentOS 7 is 5.4)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install httpd php</span><br></pre></td></tr></table></figure>
-<p>Recommand：Reboot the computer after finishing install or LogAnalyzer will not install successfully.</p>
-<p>Download LogAnalyzer from official website and extract it</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.adiscon.com/loganalyzer/loganalyzer-4.1.7.tar.gz</span><br><span class="line">tar -zxvf loganalyzer-4.1.7.tar.gz</span><br></pre></td></tr></table></figure>
-<p>To show report-images in LogAnalyzer,need to install GD module.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install gd gd-devel php-gd</span><br><span class="line">systemctl restart httpd</span><br></pre></td></tr></table></figure>
+<p>modify config file from config/kibana.yml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.port: 5601</span><br><span class="line">server.host: $SERVER_NAME</span><br><span class="line">elasticsearch.hosts: [&quot;http://$elasticsearch_SERVER_IP:9200&quot;]</span><br></pre></td></tr></table></figure>
 
-<p>Browse $YOUR_SERVER_IP/loganalyzer/src/install.php to install LogAnalyzer.</p>
-<h2 id="Use-MariaDB-MySQL-to-store-log-files-and-use-phpMyAdmin-to-manage"><a href="#Use-MariaDB-MySQL-to-store-log-files-and-use-phpMyAdmin-to-manage" class="headerlink" title="Use MariaDB(MySQL) to store log files , and use phpMyAdmin to manage."></a>Use MariaDB(MySQL) to store log files , and use phpMyAdmin to manage.</h2><p>Install MariaDB and configure</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install mariadb-server php-mysql rsyslog-mysql</span><br><span class="line">mysql_secure_installation</span><br><span class="line">mysql -u root -p  #Login </span><br></pre></td></tr></table></figure>
+<p>Download <strong>Logstash</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/logstash/logstash-7.3.0.tar.gz</span><br><span class="line">tar -zxvf logstash-7.3.0.tar.gz</span><br></pre></td></tr></table></figure>
 
-<p>In this project , phpMyAdmin version is 4.9 , php version need 5.5 or later.<br>Download phpMyAdmin setup file from official website , and extract to /var/www , browse $SERVER_IP/phpmyadmin/setup to set configuration.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p logdb &lt;/usr/share/doc/rsyslog/mysql-createDB.sql #create database</span><br><span class="line">mv config.php config.php.backup   #re-configure</span><br><span class="line">touch config.php</span><br></pre></td></tr></table></figure>
-<p>Edit rsyslog.conf</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#load ommysql module</span><br><span class="line">$ModLoad ommysql</span><br><span class="line">#:ommysql:資料庫IP,資料庫名,使用者名稱,密碼</span><br><span class="line">kern.=notice :ommysql:localhost,logdb,$dbuser,$dbpassword</span><br></pre></td></tr></table></figure>
+<h2 id="Transport-method"><a href="#Transport-method" class="headerlink" title="Transport method"></a>Transport method</h2><h3 id="Transport-rsyslog-log-files-through-LogStash"><a href="#Transport-rsyslog-log-files-through-LogStash" class="headerlink" title="Transport rsyslog log files through LogStash"></a>Transport rsyslog log files through LogStash</h3><p>Logstash config file</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">imput&#123;</span><br><span class="line">    syslog&#123;</span><br><span class="line">        port =&gt; &quot;514&quot; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">output&#123;</span><br><span class="line">    elasticsearch&#123;hosts =&gt; [&quot;$Elasticsearch_SERVER:9200&quot;]&#125;</span><br><span class="line">    stdout&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>start up logstash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/logstash -f config/syslog.conf</span><br></pre></td></tr></table></figure>
 
-<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/30yGy6y.png"><br><img src="https://i.imgur.com/Cmerkeh.png"><br><img src="https://i.imgur.com/fzN7pEO.png"></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.netadmin.com.tw/netadmin/zh-tw/feature/899D50D1860F403DB5B138D50D21F43F?page=1">自行架設LogAnalyzer日誌管理伺服器</a><br><a target="_blank" rel="noopener" href="https://www.netadmin.com.tw/netadmin/zh-tw/technology/7FEA19007FA641779EB719E77C50709E">LogAnalyzer日誌分析工具安裝設定詳解</a><br><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/centos-7-install-mariadb-mysql-server-tutorial/">CentOS Linux 7 安裝 MySQL/MariaDB 資料庫教學</a><br><a target="_blank" rel="noopener" href="https://ssorc.tw/1204">rsyslog+mysql+loganalyzer記錄系統log至資料庫並由web介面呈現</a></p>
+<h3 id="Transport-log-files-through-Filebeat"><a href="#Transport-log-files-through-Filebeat" class="headerlink" title="Transport log files through Filebeat"></a>Transport log files through Filebeat</h3><p>Download filebeat plugin</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf filebeat-7.3.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h3 id="Modify-filebeat-config-from-filebeat-yml"><a href="#Modify-filebeat-config-from-filebeat-yml" class="headerlink" title="Modify filebeat config from ./filebeat.yml"></a>Modify filebeat config from ./filebeat.yml</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#=====Filebeat inputs=====</span><br><span class="line">filebeat.inputs:</span><br><span class="line">    -type: log</span><br><span class="line">    enabled: true</span><br><span class="line">    paths:</span><br><span class="line">        -/var/log/*.log</span><br><span class="line">        </span><br><span class="line">#=====Kibana=====</span><br><span class="line">setup.kibana:</span><br><span class="line">    host: &quot;192.168.0.250:5601&quot;</span><br><span class="line"></span><br><span class="line">#=====Outputs=====</span><br><span class="line"></span><br><span class="line">#-----ElasticSearch output-----</span><br><span class="line">output.elasticsearch:</span><br><span class="line">    hosts: [&quot;$elasticsearch_SERVER_IP:9200&quot;]</span><br></pre></td></tr></table></figure>
+<p>Browse kibana/discover then can show log in screen.</p>
+<h2 id="Some-Errors"><a href="#Some-Errors" class="headerlink" title="Some Errors"></a>Some Errors</h2><h3 id="Insufficient-space-for-shared-memory-file"><a href="#Insufficient-space-for-shared-memory-file" class="headerlink" title="Insufficient space for shared memory file"></a>Insufficient space for shared memory file</h3><p>clean the disk.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br><span class="line">du -h -x --max-depth=1</span><br><span class="line">ps aux</span><br><span class="line">kill</span><br></pre></td></tr></table></figure>
+
+<h3 id="Create-Kibana-index-pattern-forbidden"><a href="#Create-Kibana-index-pattern-forbidden" class="headerlink" title="Create Kibana index pattern forbidden"></a>Create Kibana index pattern forbidden</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/wEvXFnC.png"></p>
+<center>log from rsyslog client through logstash</center>
+
+<p><img src="https://i.imgur.com/dGhGovD.png"></p>
+<center>log from local through filebeat</center>
+
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/index.html">ELK 常用架构及使用场景介绍</a><br><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk/index.html">集中式日志系统 ELK 协议栈详解</a><br><a target="_blank" rel="noopener" href="http://my-fish-it.blogspot.com/2017/06/ss-elk-max-file-descriptors-4096-for.html">ELK 錯誤訊息 max file descriptors [4096] for elasticsearch process is too low</a><br><a target="_blank" rel="noopener" href="https://juejin.im/post/5cb81bf4e51d4578c35e727d">elasticsearch 7 单机配置</a></p>
 
       
     </div>
@@ -615,217 +839,9 @@
 
 
     
-      <article id="post-ssl-bump" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <myh11 itemprop="name">
-      <a class="article-title-index" href="/2019/08/13/ssl-bump/"><strong>ssl-bump</strong></a>
-      <small class=article-date-index>&nbsp; 2019-08-13</small>
-      <!--<a>
-      <div = post.date  </div>
-      </a>-->
-      <br>
-      <br> <!-- blair add -->
-    </myh11>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      <!--<a href="/2019/08/13/ssl-bump/" class="article-date">
-  <time datetime="2019-08-13T09:29:39.000Z" itemprop="datePublished">2019-08-13</time>
-</a>-->
-      <!--
--->
-      <!--
-      
-      -->
-    </div>
-	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="peek"><a href="#peek" class="headerlink" title="peek"></a>peek</h2><p>When a peek rule matches during step1, Squid proceeds to step2 where it parses the TLS Client Hello and extracts SNI (if any). When a peek rule matches during step 2, Squid proceeds to step3 where it parses the TLS Server Hello and extracts server certificate while preserving the possibility of splicing the client and server connections; peeking at the server certificate usually precludes future bumping (see Limitations).</p>
-<h2 id="splice"><a href="#splice" class="headerlink" title="splice"></a>splice</h2><p>Become a TCP tunnel without decoding the connection. The client and the server exchange data as if there is no proxy in between.</p>
-<h2 id="bump"><a href="#bump" class="headerlink" title="bump"></a>bump</h2><p>Establish a TLS connection with the server (using client SNI, if any) and establish a TLS connection with the client (using a mimicked server certificate). However, this is not what actually happens right now if a bump rule matches during step1.</p>
-<h2 id="terminate"><a href="#terminate" class="headerlink" title="terminate"></a>terminate</h2><p>Close client and server connections.</p>
-<p>關閉client與server的連線</p>
-<h2 id="stare"><a href="#stare" class="headerlink" title="stare"></a>stare</h2><p>When a stare rule matches during step1, Squid proceeds to step2 where it parses the TLS Client Hello and extracts SNI (if any). When a stare rule matches during step2, Squid proceeds to step3 where it parses the TLS Server Hello and extracts server certificate while preserving the possibility of bumping the client and server connections; staring at the server certificate usually precludes future splicing (see Limitations).</p>
-<h2 id="情境劇stare-and-bump"><a href="#情境劇stare-and-bump" class="headerlink" title="情境劇stare and bump"></a>情境劇stare and bump</h2><p>stare在step3時將所有連線設定為splice，也就是一般的TCP Tunnel連線，若現在要與某一網站進行bump，bump設定將至於stare與splice之間，如此即可達到指定網站bump的功能。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=xm_wEezrWf4">Squid, SquidGuard, and Lightsquid on pfSense 2.4</a><br><a target="_blank" rel="noopener" href="https://wiki.squid-cache.org/Features/SslPeekAndSplice">SslBump Peek and Splice</a><br><a target="_blank" rel="noopener" href="http://www.squid-cache.org/Doc/config/ssl_bump/">Squid configuration directive ssl_bump</a></p>
-
-      
-    </div>
-	
-    <!--
-	
-    -->
-    <!--
-    
-      <footer class="article-footer">
-      </footer>
-    
-    -->
-  </div>
-  
-</article>
-
-
-
-    
-      <article id="post-squid-on-CentOS-7" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <myh11 itemprop="name">
-      <a class="article-title-index" href="/2019/08/08/squid-on-CentOS-7/"><strong>squid on CentOS 7</strong></a>
-      <small class=article-date-index>&nbsp; 2019-08-08</small>
-      <!--<a>
-      <div = post.date  </div>
-      </a>-->
-      <br>
-      <br> <!-- blair add -->
-    </myh11>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      <!--<a href="/2019/08/08/squid-on-CentOS-7/" class="article-date">
-  <time datetime="2019-08-08T09:27:36.000Z" itemprop="datePublished">2019-08-08</time>
-</a>-->
-      <!--
-  <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/%E6%9C%8D%E5%8B%99%E5%BB%BA%E7%BD%AE/">服務建置</a>
-  </div>
-
--->
-      <!--
-      
-      -->
-    </div>
-	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>Client不用設定 Proxy 伺服器 IP，即可讓client之流量皆經由squid發送，並對一特定網站限制連線，本機系統使用 CentOS 7.6。</p>
-<h2 id="系統建置"><a href="#系統建置" class="headerlink" title="系統建置"></a>系統建置</h2><p>CentOS 7.6(need NetworkAdapter *2) <a target="_blank" rel="noopener" href="https://hackmd.io/@0zewB80fSB2qjONXd8dXPw/Sk2dmULmB">CentOS 7 建置筆記</a></p>
-<p>Enable ipv4_forward</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
-<p>加入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
-<p>apply</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -p /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
-
-<h2 id="Squid-Intercept-原理"><a href="#Squid-Intercept-原理" class="headerlink" title="Squid Intercept 原理"></a>Squid Intercept 原理</h2><p>用戶端不需設定proxy相關設定，所有http與https流量由NAT導向至proxy Server，proxy Server將成為LAN與WAN之中間人(squid-in-the-middle)，此一功能除可避免手動設定proxy外，也可提升安全性需求。</p>
-<h3 id="squid-設定"><a href="#squid-設定" class="headerlink" title="squid 設定"></a>squid 設定</h3><p>squid.conf(add in config part )</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">http_port 3128 intercept #for http </span><br><span class="line"></span><br><span class="line">https_prot 3129 intercept ssl-bump /</span><br><span class="line">generate-host-certificates=on dynamic_cert_mem_cache_size=16MB /</span><br><span class="line">cert=/etc/squid/ssl_cert/gss.com.cert /</span><br><span class="line">key=/etc/squid/ssl_cert/myCA.key  #for http</span><br><span class="line"></span><br><span class="line">#Configure SSL Bump </span><br><span class="line">always_direct allow all        #forward all request</span><br><span class="line">acl bump_sites dstdomain &quot;/etc/squid/ssl_cert/bump_sites.txt&quot; #forbid domain</span><br><span class="line">acl step1 at_step SslBump1     #connect client first</span><br><span class="line">ssl_bump peek step1</span><br><span class="line">ssl_bump bump bump_sites</span><br></pre></td></tr></table></figure>
-
-<h2 id="make-certificate-openSSL"><a href="#make-certificate-openSSL" class="headerlink" title="make certificate(openSSL)"></a>make certificate(openSSL)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out myCA.key 2048</span><br><span class="line">openssl req -new -key myCA.key -out gss.com.csr</span><br><span class="line">openssl x509 -req -days 365 -in gss.com.csr -signkey myCA.key -out gss.com.cert</span><br></pre></td></tr></table></figure>
-<p>產生出cert後，client端需匯入此憑證。</p>
-<h2 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h2><p>將LAN端port 80(http)與443(https)流量導向至squid</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -A PREROUTING -i ens37 -p tcp --dport 80 -j REDIRECT --to-port 3128</span><br><span class="line">iptables -t nat -A PREROUTING -i ens37 -p tcp --dport 443 -j REDIRECT --to-port 3129</span><br><span class="line">iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE</span><br></pre></td></tr></table></figure>
-
-<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/0oXUv8O.png"></p>
-<h2 id="備忘錄"><a href="#備忘錄" class="headerlink" title="備忘錄"></a>備忘錄</h2><ol>
-<li>CentOS 7 系統有default iptables rules，建議先全部清除。</li>
-<li>當前模式為intercept，若client端指定proxy ip，則流量將被squid forbid，所以當squid為transparent(intercept)mode時，就不應該手動設定proxy ip 。</li>
-<li>要清楚是squid本身擋掉封包，還是iptables。(善用wireshark與access.log)</li>
-<li>SELinux要關閉。</li>
-</ol>
-<h2 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h2><p><a target="_blank" rel="noopener" href="https://wiki.squid-cache.org/ConfigExamples/Intercept/LinuxRedirect#Squid_Configuration_File">wiki squid(NAT REDIRECT)</a><br><a target="_blank" rel="noopener" href="https://wiki.squid-cache.org/ConfigExamples/Intercept/LinuxDnat">wiki squid(DNAT)</a><br><a target="_blank" rel="noopener" href="https://www.agix.com.au/minimal-transparent-squid-proxy-with-ssl-interception-bumping-on-centos-7/">build squid proxy with ssl bumping</a><br><a target="_blank" rel="noopener" href="http://zoufeng.net/2017/09/23/squid-proxy-with-ssl-bump/">squid正向代理</a><br><a target="_blank" rel="noopener" href="http://blog.faq-book.com/?p=5308">acl 設定</a><br><a target="_blank" rel="noopener" href="https://www.zybuluo.com/delight/note/2649">squid SSL相關特性</a><br><a target="_blank" rel="noopener" href="http://www.squid-cache.org/Doc/config/ssl_bump/">Squid configuration directive ssl_bump</a></p>
-
-      
-    </div>
-	
-    <!--
-	
-    -->
-    <!--
-    
-      <footer class="article-footer">
-      </footer>
-    
-    -->
-  </div>
-  
-</article>
-
-
-
-    
-      <article id="post-CentOS-7-基本環境建置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <myh11 itemprop="name">
-      <a class="article-title-index" href="/2019/08/06/CentOS-7-%E5%9F%BA%E6%9C%AC%E7%92%B0%E5%A2%83%E5%BB%BA%E7%BD%AE/"><strong>CentOS 7 基本環境建置</strong></a>
-      <small class=article-date-index>&nbsp; 2019-08-06</small>
-      <!--<a>
-      <div = post.date  </div>
-      </a>-->
-      <br>
-      <br> <!-- blair add -->
-    </myh11>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      <!--<a href="/2019/08/06/CentOS-7-%E5%9F%BA%E6%9C%AC%E7%92%B0%E5%A2%83%E5%BB%BA%E7%BD%AE/" class="article-date">
-  <time datetime="2019-08-06T09:36:36.000Z" itemprop="datePublished">2019-08-06</time>
-</a>-->
-      <!--
-  <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/%E7%B3%BB%E7%B5%B1%E5%BB%BA%E7%BD%AE/">系統建置</a>
-  </div>
-
--->
-      <!--
-      
-      -->
-    </div>
-	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="字型與字型大小"><a href="#字型與字型大小" class="headerlink" title="字型與字型大小"></a>字型與字型大小</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .bash_profile</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if</span><br><span class="line">    setfont sun12x22 //man setfont取得更多說明</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-
-<h2 id="網路介面設定"><a href="#網路介面設定" class="headerlink" title="網路介面設定"></a>網路介面設定</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nmcli d //檢視網路介面啟動狀態</span><br><span class="line">nmtui //設定程式</span><br><span class="line">ip a //檢視網路卡當前ip address以及netmask</span><br></pre></td></tr></table></figure>
-<p>網路卡設定檔路徑</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/sysconfig/network-scripts/ifcfg-**AdapterName**</span><br></pre></td></tr></table></figure>
-
-<h2 id="安裝vim"><a href="#安裝vim" class="headerlink" title="安裝vim"></a>安裝vim</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install vim</span><br></pre></td></tr></table></figure>
-      
-    </div>
-	
-    <!--
-	
-    -->
-    <!--
-    
-      <footer class="article-footer">
-      </footer>
-    
-    -->
-  </div>
-  
-</article>
-
-
-
+      <nav id="page-nav">
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一頁 &amp;raquo;</a>
+      </nav>
     
 
 </section>
