@@ -53,6 +53,107 @@
 
     <br>
     <section id="main" class="outer">
+      <article id="post-用-ELK-分析與儲存-log-紀錄" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/20/%E7%94%A8-ELK-%E5%88%86%E6%9E%90%E8%88%87%E5%84%B2%E5%AD%98-log-%E7%B4%80%E9%8C%84/"><strong>用 ELK 分析與儲存 log 紀錄</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-20</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/20/%E7%94%A8-ELK-%E5%88%86%E6%9E%90%E8%88%87%E5%84%B2%E5%AD%98-log-%E7%B4%80%E9%8C%84/" class="article-date">
+  <time datetime="2019-08-20T03:25:49.000Z" itemprop="datePublished">2019-08-20</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/ELK/">ELK</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>Before, we installed and configured the rsyslog , MySQL and LogAnalyzer.<br>Now we use anothor tools to help us collect logs , and get better statistics.</p>
+<h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>Deploy the ELK and get statistics to analyze logs.</p>
+<h2 id="System-environvent"><a href="#System-environvent" class="headerlink" title="System environvent"></a>System environvent</h2><p><a target="_blank" rel="noopener" href="https://hackmd.io/@0zewB80fSB2qjONXd8dXPw/rkGmm-WNH">Transport iptables log file to log server</a><br>Same environment in this note,and install the ELK in log server.</p>
+<h2 id="Install-ELK"><a href="#Install-ELK" class="headerlink" title="Install ELK"></a>Install ELK</h2><p>Install Java-OpenSDK</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java</span><br></pre></td></tr></table></figure>
+
+<p>Download <strong>ElasticSearch</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf elasticsearch-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">cd elasticsearch</span><br><span class="line">bin/elasticsearch  #run to install</span><br></pre></td></tr></table></figure>
+<p>modify config file from config/elasticsearch.yml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cluster.name: log-elasticsearch</span><br><span class="line">network.host: $SERVER_IP</span><br><span class="line">http.port: 9200</span><br><span class="line">discovery.seed_hosts:[&quot;127.0.0.1&quot;,&quot;[::1]&quot;,&quot;[$SERVER_IP]&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>Download <strong>Kibana</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf kibana-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">cd kibana/config</span><br><span class="line">vim kibana.yml</span><br></pre></td></tr></table></figure>
+
+<p>modify config file from config/kibana.yml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.port: 5601</span><br><span class="line">server.host: $SERVER_NAME</span><br><span class="line">elasticsearch.hosts: [&quot;http://$elasticsearch_SERVER_IP:9200&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>Download <strong>Logstash</strong> and extract it</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/logstash/logstash-7.3.0.tar.gz</span><br><span class="line">tar -zxvf logstash-7.3.0.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="Transport-method"><a href="#Transport-method" class="headerlink" title="Transport method"></a>Transport method</h2><h3 id="Transport-rsyslog-log-files-through-LogStash"><a href="#Transport-rsyslog-log-files-through-LogStash" class="headerlink" title="Transport rsyslog log files through LogStash"></a>Transport rsyslog log files through LogStash</h3><p>Logstash config file</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">imput&#123;</span><br><span class="line">    syslog&#123;</span><br><span class="line">        port =&gt; &quot;514&quot; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">output&#123;</span><br><span class="line">    elasticsearch&#123;hosts =&gt; [&quot;$Elasticsearch_SERVER:9200&quot;]&#125;</span><br><span class="line">    stdout&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>start up logstash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/logstash -f config/syslog.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="Transport-log-files-through-Filebeat"><a href="#Transport-log-files-through-Filebeat" class="headerlink" title="Transport log files through Filebeat"></a>Transport log files through Filebeat</h3><p>Download filebeat plugin</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.3.0-linux-x86_64.tar.gz</span><br><span class="line">tar -zxvf filebeat-7.3.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h3 id="Modify-filebeat-config-from-filebeat-yml"><a href="#Modify-filebeat-config-from-filebeat-yml" class="headerlink" title="Modify filebeat config from ./filebeat.yml"></a>Modify filebeat config from ./filebeat.yml</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#=====Filebeat inputs=====</span><br><span class="line">filebeat.inputs:</span><br><span class="line">    -type: log</span><br><span class="line">    enabled: true</span><br><span class="line">    paths:</span><br><span class="line">        -/var/log/*.log</span><br><span class="line">        </span><br><span class="line">#=====Kibana=====</span><br><span class="line">setup.kibana:</span><br><span class="line">    host: &quot;192.168.0.250:5601&quot;</span><br><span class="line"></span><br><span class="line">#=====Outputs=====</span><br><span class="line"></span><br><span class="line">#-----ElasticSearch output-----</span><br><span class="line">output.elasticsearch:</span><br><span class="line">    hosts: [&quot;$elasticsearch_SERVER_IP:9200&quot;]</span><br></pre></td></tr></table></figure>
+<p>Browse kibana/discover then can show log in screen.</p>
+<h2 id="Some-Errors"><a href="#Some-Errors" class="headerlink" title="Some Errors"></a>Some Errors</h2><h3 id="Insufficient-space-for-shared-memory-file"><a href="#Insufficient-space-for-shared-memory-file" class="headerlink" title="Insufficient space for shared memory file"></a>Insufficient space for shared memory file</h3><p>clean the disk.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br><span class="line">du -h -x --max-depth=1</span><br><span class="line">ps aux</span><br><span class="line">kill</span><br></pre></td></tr></table></figure>
+
+<h3 id="Create-Kibana-index-pattern-forbidden"><a href="#Create-Kibana-index-pattern-forbidden" class="headerlink" title="Create Kibana index pattern forbidden"></a>Create Kibana index pattern forbidden</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XPUT -H &quot;Content-Type: application/json&quot; http://localhost:9200/_all/_settings -d &#x27;&#123;&quot;index.blocks.read_only_allow_delete&quot;: null&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h2><p><img src="https://i.imgur.com/wEvXFnC.png"></p>
+<center>log from rsyslog client through logstash</center>
+
+<p><img src="https://i.imgur.com/dGhGovD.png"></p>
+<center>log from local through filebeat</center>
+
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/index.html">ELK 常用架构及使用场景介绍</a><br><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk/index.html">集中式日志系统 ELK 协议栈详解</a><br><a target="_blank" rel="noopener" href="http://my-fish-it.blogspot.com/2017/06/ss-elk-max-file-descriptors-4096-for.html">ELK 錯誤訊息 max file descriptors [4096] for elasticsearch process is too low</a><br><a target="_blank" rel="noopener" href="https://juejin.im/post/5cb81bf4e51d4578c35e727d">elasticsearch 7 单机配置</a></p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-Transport-iptables-log-file-to-log-server" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
