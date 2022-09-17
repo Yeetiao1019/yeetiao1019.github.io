@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>2022 iThome 鐵人賽 - ASP.NET Core - 活動報名管理系統：Day2 系統功能發想 - YeeTiao - 將歷史都放在這裡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="開發框架與資料庫 ASP.NET Core MVC(.NET 5) Entity Framework Core 5 SQL Server 2019  開發軟體 Visual Studio 2019 SSMS or Azure Data Studio(偶爾會用 macOS 開發)  系統應用描述在一個活動中，主要會有「一般使用者」與「活動主辦方」兩種角色。這裡從兩種角色最一開始到結束的行為，e.g.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2022 iThome 鐵人賽 - ASP.NET Core - 活動報名管理系統：Day2 系統功能發想">
+<meta property="og:url" content="http://example.com/2022/09/16/2022-iThome-%E9%90%B5%E4%BA%BA%E8%B3%BD-ASP.NET-Core-%E6%B4%BB%E5%8B%95%E5%A0%B1%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%EF%BC%9ADay2-%E7%B3%BB%E7%B5%B1%E5%8A%9F%E8%83%BD%E7%99%BC%E6%83%B3/index.html">
+<meta property="og:site_name" content="YeeTiao - 將歷史都放在這裡">
+<meta property="og:description" content="開發框架與資料庫 ASP.NET Core MVC(.NET 5) Entity Framework Core 5 SQL Server 2019  開發軟體 Visual Studio 2019 SSMS or Azure Data Studio(偶爾會用 macOS 開發)  系統應用描述在一個活動中，主要會有「一般使用者」與「活動主辦方」兩種角色。這裡從兩種角色最一開始到結束的行為，e.g.">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2022-09-16T13:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-17T12:54:40.442Z">
+<meta property="article:author" content="YeeTiao Chen">
+<meta property="article:tag" content="2022-鐵人賽">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <!-- blair add baidu tongji start... @2017.10.03 -->
+<!-- blair add baidu tongji end ! @2017.10.03 -->
+
+<header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo" href="/"></a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/archives">文章總覽</a>
+        
+          <a class="main-nav-link" href="/about">關於我</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <br>
+    <section id="main" class="outer"><article id="2022-2022-iThome-鐵人賽-ASP.NET-Core-活動報名管理系統：Day2-系統功能發想" class="article article-type-2022" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      2022 iThome 鐵人賽 - ASP.NET Core - 活動報名管理系統：Day2 系統功能發想
+      <small class=article-detail-date-index>&nbsp; 2022-09-16</small>
+    </h1>
+  
+
+
+        <div class=page-title></div>
+        <br>
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2022/09/16/2022-iThome-%E9%90%B5%E4%BA%BA%E8%B3%BD-ASP.NET-Core-%E6%B4%BB%E5%8B%95%E5%A0%B1%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%EF%BC%9ADay2-%E7%B3%BB%E7%B5%B1%E5%8A%9F%E8%83%BD%E7%99%BC%E6%83%B3/" class="article-date">
+  <time datetime="2022-09-16T13:00:00.000Z" itemprop="datePublished">2022-09-16</time>
+</a>-->
+      <!-- 
+--><!-- by blair 160724 -->
+      <!-- by blair
+      
+      -->
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="開發框架與資料庫"><a href="#開發框架與資料庫" class="headerlink" title="開發框架與資料庫"></a>開發框架與資料庫</h2><ul>
+<li>ASP.NET Core MVC(.NET 5)</li>
+<li>Entity Framework Core 5</li>
+<li>SQL Server 2019</li>
+</ul>
+<h2 id="開發軟體"><a href="#開發軟體" class="headerlink" title="開發軟體"></a>開發軟體</h2><ul>
+<li>Visual Studio 2019</li>
+<li>SSMS or Azure Data Studio(偶爾會用 macOS 開發)</li>
+</ul>
+<h2 id="系統應用描述"><a href="#系統應用描述" class="headerlink" title="系統應用描述"></a>系統應用描述</h2><p>在一個活動中，主要會有「一般使用者」與「活動主辦方」兩種角色。這裡從兩種角色最一開始到結束的行為，e.g. 報名、舉辦活動開始至填寫活動意見回饋、瀏覽活動成效統計，用敘事的方式來統整系統會使用到哪些功能：</p>
+<ol>
+<li>一般使用者</li>
+</ol>
+<p>這週日剛好一整天沒事，到活動系統看一下有什麼活動可以參加好了。<br>這次想聽音樂會，於是將分類篩選中的<strong>音樂會</strong>多選方塊勾選起來，並且將活動舉辦日選擇為<strong>本週</strong>。<br>畫面顯示有個 A 樂團的音樂會，（當滑鼠移到報名按鈕時）發現按鈕無法點選，並且顯示<strong>已停止報名</strong>的文字，只好看看有沒有其他樂團的音樂會可以參加，於是在分類篩選中勾選起<strong>尚可報名</strong>的多選方塊。<br>這次看到了 B 樂團的音樂會並且狀態顯示可報名，於是點擊活動標題，瀏覽器導向到活動的詳細資訊頁面。<br>頁面最下方有個<strong>報名</strong>的按鈕可點選，點選後瀏覽器跳轉至個人資訊填寫頁面，如果會員尚未登入，則先跳轉至登入頁面；若會員已登入，且已事先在會員中心填寫好個人資訊，則個人資訊填寫頁面的欄位直接帶出相對應的值。<br>剛剛忘記看活動幾點開始了，於是到會員中心中的<strong>活動參加歷史</strong>頁面，查找剛剛的活動，藉此得知活動的資訊。</p>
+<p>在一般使用者的使用情境中，可以統整出下列功能：</p>
+<ul>
+<li>瀏覽頁面（首頁） <ul>
+<li>活動名稱查詢</li>
+<li>分類篩選<ul>
+<li>活動種類篩選</li>
+<li>活動日篩選</li>
+<li>是否開放報名</li>
+</ul>
+</li>
+<li>顯示活動狀態</li>
+</ul>
+</li>
+<li>活動詳細頁面<ul>
+<li>活動內容資訊</li>
+<li>確認報名</li>
+</ul>
+</li>
+<li>活動報名確認頁面<ul>
+<li>填寫會員資訊</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>活動主辦者</li>
+</ol>
+<p>我是 B 樂團的行政人員，這次演出將在 2022-10-02 舉辦一場音樂會，地點在高雄市的大東文化藝術中心，報名人數上限將設定在 100 人，可報名期間設定在 2022-09-01 00:00:00 ~ 2022-10-01 23:59:59，票價為 0 元，當然還有其他關於活動資訊的欄位要填寫，主辦單位相關資訊將會直接從會員中心的基本資料帶出。</p>
+<p>而在活動主辦者的使用情境中，統整出以下功能：</p>
+<ul>
+<li>活動舉辦頁面<ul>
+<li>活動詳細內容輸入</li>
+</ul>
+</li>
+</ul>
+<p>而兩者皆需要使用的功能為：</p>
+<ul>
+<li>會員登入/註冊<ul>
+<li>系統自有註冊</li>
+<li>Google OAuth</li>
+</ul>
+</li>
+<li>會員中心<ul>
+<li>會員/主辦資訊輸入</li>
+<li>活動參加/主辦歷史查詢</li>
+</ul>
+</li>
+</ul>
+<p>功能開發順序，我會如此排定：</p>
+<ol>
+<li>系統的主軸在「活動」，所以會先從活動本身的 CRUD 來進行開發</li>
+<li>會員註冊/登入功能（會有身份權限的功能）</li>
+<li>前端 Bootstrap 套版</li>
+</ol>
+<p>以上簡述了本次活動報名與管理系統的功能，每個功能的細節以及商業邏輯會在接下來的文章一一描述以及實作。</p>
+<p>那麼，我們下一篇見！</p>
+
+      
+    
+    </div>
+    
+      <div class="article-toc">
+        <h3>目錄</h3>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%96%8B%E7%99%BC%E6%A1%86%E6%9E%B6%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB"><span class="toc-text">開發框架與資料庫</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%96%8B%E7%99%BC%E8%BB%9F%E9%AB%94"><span class="toc-text">開發軟體</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%B5%B1%E6%87%89%E7%94%A8%E6%8F%8F%E8%BF%B0"><span class="toc-text">系統應用描述</span></a></li></ol>
+      </div>
+    
+    
+      <footer class="article-footer">
+        <!-- <div class="well" style="width:100px; height:30px;"></div>  by blair-->
+        
+ <!-- by blair add 160724-->
+        <!--
+        <div style="width:100px; height:30px;"></div> by blair add 160724
+        -->
+        
+  <div class="article-tag">
+    <a class="article-tag-none-link" href="/tags/2022-%E9%90%B5%E4%BA%BA%E8%B3%BD/" rel="tag">2022-鐵人賽</a>
+  </div>
+
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/09/15/2022-iThome-%E9%90%B5%E4%BA%BA%E8%B3%BD-ASP.NET-Core-%E6%B4%BB%E5%8B%95%E5%A0%B1%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%EF%BC%9ADay1-%E4%B8%8A%E5%8F%B0%E5%89%8D%E7%9A%84%E6%B7%B1%E5%91%BC%E5%90%B8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">2022 iThome 鐵人賽 -  ASP.NET Core - 活動報名管理系統：Day1 上台前的深呼吸&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 YeeTiao Chen&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a target="_blank" rel="noopener" href="http://github.com/52binge/hexo-theme-blairos">blairos</a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+      displayMath: [ ['$$','$$']],
+      processEscapes: true
+    }
+  });
+</script>
+<!-- <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML,http://myserver.com/MathJax/config/local/local.js"> -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

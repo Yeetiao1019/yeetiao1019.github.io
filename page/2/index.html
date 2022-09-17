@@ -53,6 +53,97 @@
 
     <br>
     <section id="main" class="outer">
+      <article id="post-Linux-Programming-I-O-Redirection、Pipeline" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/"><strong>Linux Programming I/O Redirection、Pipeline</strong></a>
+      <small class=article-date-index>&nbsp; 2019-08-26</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/" class="article-date">
+  <time datetime="2019-08-26T09:38:48.000Z" itemprop="datePublished">2019-08-26</time>
+</a>-->
+      <!--
+  <div class="article-category-index">
+    <a class="article-category-index-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="輸入、輸出、重新導向"><a href="#輸入、輸出、重新導向" class="headerlink" title="輸入、輸出、重新導向"></a>輸入、輸出、重新導向</h2><p>標準輸入（STDIN）：代碼表示0，程式執行時所需要的輸入資料。<br>標準輸出（STDOUT）：代碼表示1，程式”正常“執行時所產生的輸出資料。<br>標準錯誤輸出（STDERR）：代碼表示2，程式”錯誤“執行時輸出的訊息。<br>重新導向：改變資料的輸出入方向。</p>
+<p><img src="https://i.imgur.com/CmJfEx1.jpg"><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenchen410/article/details/39138437">Image source：Piping and Redirection,output，Reading from STDIN in script(Linux)</a></p>
+<h2 id="標準輸出-STDOUT"><a href="#標準輸出-STDOUT" class="headerlink" title="標準輸出 STDOUT"></a>標準輸出 STDOUT</h2><p>一般的程式執行結果會顯示在螢幕上，也就是說預設的標準輸出是螢幕。我們可以使用 <code> &gt;</code> 來將標準輸出導向至檔案。<br>語法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N &gt; FILE</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Example：將 ```ls -al``` 輸出內容導向至ls.txt</span><br></pre></td></tr></table></figure>
+<p>ls -al &gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">若當前資料夾中``` ls.txt ```檔案不存在，則為自動生成一個並寫入。</span><br><span class="line">若此檔案存在，則會清除原始內容並寫入```ls -al```輸出資料。</span><br><span class="line">若想要保留原始資料並將輸出內容接續檔案原內容，則可以使用```&gt;&gt;```替換原本的```&gt;```。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls -al &gt;&gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 標準錯誤輸出 STDERR</span><br><span class="line">程式發生錯誤時，錯誤訊息預設也是輸出在螢幕上。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若想要將錯誤訊息輸出至```ls.txt```內，如果下這行command：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">錯誤訊息依然顯示在螢幕，而```ls.txt```也不會寫入錯誤訊息。原因是```&gt;```預設代碼為```1```，此時我們要指定代碼為```2```，也就是指定將輸出錯誤訊息寫入```ls.txt```內。</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt 2&gt; ls.txt<br>cat ls.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若想將標準輸出與標準錯誤輸出的資料一起寫入同個檔案可以這樣寫：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt 2&gt;&amp;1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```2&gt;&amp;1```代表將**標準錯誤輸出**的資料導入**標準輸出**</span><br><span class="line">不要忘記```&gt;```預設為**正常輸出**。</span><br><span class="line">驗證：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt &gt; ls.txt 2&gt;&amp;1<br>cat ls.txt<br>ls: cannot access no_file.txt: No such file or directory<br>touch no_file.txt<br>ls no_file.txt &gt; ls.txt 2&gt;&amp;1<br>cat ls.txt<br>no_file.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">原先無```no_file.txt```此檔案，執行```ls```並將錯誤訊息寫入```ls.txt```，新增```no_file.txt```並再一次執行```ls```，可以看到輸出訊息有所變化且正常輸出與錯誤輸出資料都寫入```ls.txt```內。</span><br><span class="line"></span><br><span class="line">導向語法有許多組合，以下都可以達到將正常輸出與錯誤輸出寫入同一個檔案內。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls no_file.txt 2&gt; ls.txt 1&gt;&amp;2<br>ls no_file.txt &gt;&amp; ls.txt<br>ls no_file.txt &amp;&gt; ls.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```&gt;&amp;``` ```&amp;&gt;```為將所有輸出導向至檔案。</span><br><span class="line">實用例子：儲存iptables規則至檔案</span><br></pre></td></tr></table></figure>
+<p>iptables-save &gt; iptables.rule</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 標準輸入</span><br><span class="line">需要輸入資料的Linux程式若執行時沒有給予資料的話，預設將會從鍵盤讀取資料</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>cat<br>1<br>1<br>2<br>2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用```&lt;```，將指定的檔案設定為程式的標準輸入</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>cat &lt; ls.txt<br>no_file.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 管線 pipe</span><br><span class="line">若要把兩個或以上的程式輸入出串連起來，可以使用```|```（pipe）。</span><br><span class="line">![](https://i.imgur.com/sN2gQjM.png)</span><br><span class="line">[Image Soruce：鳥哥的 Linux 私房菜 第十章、認識與學習BASH](http://linux.vbird.org/linux_basic/0320bash.php)</span><br><span class="line"></span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
+<p>ls | nl</p>
+<p>1 file1<br>2 file2<br>3 directory3</p>
+<p>```</p>
+<p><code>nl</code>為顯示行數的指令。<br>也就是 <code>ls</code>的輸出透過pipe成為了<code>nl</code>的輸入，達到了可顯示行數的<code>ls</code>功能。</p>
+<h2 id="dev-null"><a href="#dev-null" class="headerlink" title="/dev/null"></a>/dev/null</h2><p>-<br>一個類似垃圾桶的東西，若將輸出指向至此，則所有輸出將會被捨棄掉。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/linux-io-input-output-redirection-operators/">GTW-Linux I/O 輸入與輸出重新導向，基礎概念教學</a></p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-用-ELK-分析與儲存-log-紀錄" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     

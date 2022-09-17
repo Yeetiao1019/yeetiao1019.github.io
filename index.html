@@ -53,6 +53,129 @@
 
     <br>
     <section id="main" class="outer">
+      <article id="2022-2022-iThome-鐵人賽-ASP.NET-Core-活動報名管理系統：Day2-系統功能發想" class="article article-type-2022" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <myh11 itemprop="name">
+      <a class="article-title-index" href="/2022/09/16/2022-iThome-%E9%90%B5%E4%BA%BA%E8%B3%BD-ASP.NET-Core-%E6%B4%BB%E5%8B%95%E5%A0%B1%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%EF%BC%9ADay2-%E7%B3%BB%E7%B5%B1%E5%8A%9F%E8%83%BD%E7%99%BC%E6%83%B3/"><strong>2022 iThome 鐵人賽 - ASP.NET Core - 活動報名管理系統：Day2 系統功能發想</strong></a>
+      <small class=article-date-index>&nbsp; 2022-09-16</small>
+      <!--<a>
+      <div = post.date  </div>
+      </a>-->
+      <br>
+      <br> <!-- blair add -->
+    </myh11>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      <!--<a href="/2022/09/16/2022-iThome-%E9%90%B5%E4%BA%BA%E8%B3%BD-ASP.NET-Core-%E6%B4%BB%E5%8B%95%E5%A0%B1%E5%90%8D%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%EF%BC%9ADay2-%E7%B3%BB%E7%B5%B1%E5%8A%9F%E8%83%BD%E7%99%BC%E6%83%B3/" class="article-date">
+  <time datetime="2022-09-16T13:00:00.000Z" itemprop="datePublished">2022-09-16</time>
+</a>-->
+      <!--
+-->
+      <!--
+      
+      -->
+    </div>
+	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="開發框架與資料庫"><a href="#開發框架與資料庫" class="headerlink" title="開發框架與資料庫"></a>開發框架與資料庫</h2><ul>
+<li>ASP.NET Core MVC(.NET 5)</li>
+<li>Entity Framework Core 5</li>
+<li>SQL Server 2019</li>
+</ul>
+<h2 id="開發軟體"><a href="#開發軟體" class="headerlink" title="開發軟體"></a>開發軟體</h2><ul>
+<li>Visual Studio 2019</li>
+<li>SSMS or Azure Data Studio(偶爾會用 macOS 開發)</li>
+</ul>
+<h2 id="系統應用描述"><a href="#系統應用描述" class="headerlink" title="系統應用描述"></a>系統應用描述</h2><p>在一個活動中，主要會有「一般使用者」與「活動主辦方」兩種角色。這裡從兩種角色最一開始到結束的行為，e.g. 報名、舉辦活動開始至填寫活動意見回饋、瀏覽活動成效統計，用敘事的方式來統整系統會使用到哪些功能：</p>
+<ol>
+<li>一般使用者</li>
+</ol>
+<p>這週日剛好一整天沒事，到活動系統看一下有什麼活動可以參加好了。<br>這次想聽音樂會，於是將分類篩選中的<strong>音樂會</strong>多選方塊勾選起來，並且將活動舉辦日選擇為<strong>本週</strong>。<br>畫面顯示有個 A 樂團的音樂會，（當滑鼠移到報名按鈕時）發現按鈕無法點選，並且顯示<strong>已停止報名</strong>的文字，只好看看有沒有其他樂團的音樂會可以參加，於是在分類篩選中勾選起<strong>尚可報名</strong>的多選方塊。<br>這次看到了 B 樂團的音樂會並且狀態顯示可報名，於是點擊活動標題，瀏覽器導向到活動的詳細資訊頁面。<br>頁面最下方有個<strong>報名</strong>的按鈕可點選，點選後瀏覽器跳轉至個人資訊填寫頁面，如果會員尚未登入，則先跳轉至登入頁面；若會員已登入，且已事先在會員中心填寫好個人資訊，則個人資訊填寫頁面的欄位直接帶出相對應的值。<br>剛剛忘記看活動幾點開始了，於是到會員中心中的<strong>活動參加歷史</strong>頁面，查找剛剛的活動，藉此得知活動的資訊。</p>
+<p>在一般使用者的使用情境中，可以統整出下列功能：</p>
+<ul>
+<li>瀏覽頁面（首頁） <ul>
+<li>活動名稱查詢</li>
+<li>分類篩選<ul>
+<li>活動種類篩選</li>
+<li>活動日篩選</li>
+<li>是否開放報名</li>
+</ul>
+</li>
+<li>顯示活動狀態</li>
+</ul>
+</li>
+<li>活動詳細頁面<ul>
+<li>活動內容資訊</li>
+<li>確認報名</li>
+</ul>
+</li>
+<li>活動報名確認頁面<ul>
+<li>填寫會員資訊</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>活動主辦者</li>
+</ol>
+<p>我是 B 樂團的行政人員，這次演出將在 2022-10-02 舉辦一場音樂會，地點在高雄市的大東文化藝術中心，報名人數上限將設定在 100 人，可報名期間設定在 2022-09-01 00:00:00 ~ 2022-10-01 23:59:59，票價為 0 元，當然還有其他關於活動資訊的欄位要填寫，主辦單位相關資訊將會直接從會員中心的基本資料帶出。</p>
+<p>而在活動主辦者的使用情境中，統整出以下功能：</p>
+<ul>
+<li>活動舉辦頁面<ul>
+<li>活動詳細內容輸入</li>
+</ul>
+</li>
+</ul>
+<p>而兩者皆需要使用的功能為：</p>
+<ul>
+<li>會員登入/註冊<ul>
+<li>系統自有註冊</li>
+<li>Google OAuth</li>
+</ul>
+</li>
+<li>會員中心<ul>
+<li>會員/主辦資訊輸入</li>
+<li>活動參加/主辦歷史查詢</li>
+</ul>
+</li>
+</ul>
+<p>功能開發順序，我會如此排定：</p>
+<ol>
+<li>系統的主軸在「活動」，所以會先從活動本身的 CRUD 來進行開發</li>
+<li>會員註冊/登入功能（會有身份權限的功能）</li>
+<li>前端 Bootstrap 套版</li>
+</ol>
+<p>以上簡述了本次活動報名與管理系統的功能，每個功能的細節以及商業邏輯會在接下來的文章一一描述以及實作。</p>
+<p>那麼，我們下一篇見！</p>
+
+      
+    </div>
+	
+    <!--
+	
+    -->
+    <!--
+    
+      <footer class="article-footer">
+      </footer>
+    
+    -->
+  </div>
+  
+</article>
+
+
+
+    
       <article id="2022-2022-iThome-鐵人賽-ASP.NET-Core-活動報名管理系統：Day1-上台前的深呼吸" class="article article-type-2022" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -689,97 +812,6 @@
 <p><code>Could not hardlink copy...</code><br>參考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d0004e16c454">XCode Could not hardlink copy</a></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://youtu.be/13-jNF984C0">Flutter: Firebase Tutorial Part 1 | Auth and Sign in</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.freecodecamp.org/news/how-to-integrate-your-ios-flutter-app-with-firebase-on-macos-6ad08e2714f0/">How to integrate your iOS Flutter App with Firebase on MacOS</a></p>
-
-      
-    </div>
-	
-    <!--
-	
-    -->
-    <!--
-    
-      <footer class="article-footer">
-      </footer>
-    
-    -->
-  </div>
-  
-</article>
-
-
-
-    
-      <article id="post-Linux-Programming-I-O-Redirection、Pipeline" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <myh11 itemprop="name">
-      <a class="article-title-index" href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/"><strong>Linux Programming I/O Redirection、Pipeline</strong></a>
-      <small class=article-date-index>&nbsp; 2019-08-26</small>
-      <!--<a>
-      <div = post.date  </div>
-      </a>-->
-      <br>
-      <br> <!-- blair add -->
-    </myh11>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      <!--<a href="/2019/08/26/Linux-Programming-I-O-Redirection%E3%80%81Pipeline/" class="article-date">
-  <time datetime="2019-08-26T09:38:48.000Z" itemprop="datePublished">2019-08-26</time>
-</a>-->
-      <!--
-  <div class="article-category-index">
-    <a class="article-category-index-link" href="/categories/Linux/">Linux</a>
-  </div>
-
--->
-      <!--
-      
-      -->
-    </div>
-	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="輸入、輸出、重新導向"><a href="#輸入、輸出、重新導向" class="headerlink" title="輸入、輸出、重新導向"></a>輸入、輸出、重新導向</h2><p>標準輸入（STDIN）：代碼表示0，程式執行時所需要的輸入資料。<br>標準輸出（STDOUT）：代碼表示1，程式”正常“執行時所產生的輸出資料。<br>標準錯誤輸出（STDERR）：代碼表示2，程式”錯誤“執行時輸出的訊息。<br>重新導向：改變資料的輸出入方向。</p>
-<p><img src="https://i.imgur.com/CmJfEx1.jpg"><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenchen410/article/details/39138437">Image source：Piping and Redirection,output，Reading from STDIN in script(Linux)</a></p>
-<h2 id="標準輸出-STDOUT"><a href="#標準輸出-STDOUT" class="headerlink" title="標準輸出 STDOUT"></a>標準輸出 STDOUT</h2><p>一般的程式執行結果會顯示在螢幕上，也就是說預設的標準輸出是螢幕。我們可以使用 <code> &gt;</code> 來將標準輸出導向至檔案。<br>語法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">N &gt; FILE</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Example：將 ```ls -al``` 輸出內容導向至ls.txt</span><br></pre></td></tr></table></figure>
-<p>ls -al &gt; ls.txt</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">若當前資料夾中``` ls.txt ```檔案不存在，則為自動生成一個並寫入。</span><br><span class="line">若此檔案存在，則會清除原始內容並寫入```ls -al```輸出資料。</span><br><span class="line">若想要保留原始資料並將輸出內容接續檔案原內容，則可以使用```&gt;&gt;```替換原本的```&gt;```。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
-<p>ls -al &gt;&gt; ls.txt</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 標準錯誤輸出 STDERR</span><br><span class="line">程式發生錯誤時，錯誤訊息預設也是輸出在螢幕上。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
-<p>ls no_file.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若想要將錯誤訊息輸出至```ls.txt```內，如果下這行command：</span><br></pre></td></tr></table></figure>
-<p>ls no_file.txt &gt; ls.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">錯誤訊息依然顯示在螢幕，而```ls.txt```也不會寫入錯誤訊息。原因是```&gt;```預設代碼為```1```，此時我們要指定代碼為```2```，也就是指定將輸出錯誤訊息寫入```ls.txt```內。</span><br></pre></td></tr></table></figure>
-<p>ls no_file.txt 2&gt; ls.txt<br>cat ls.txt<br>ls: cannot access no_file.txt: No such file or directory</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若想將標準輸出與標準錯誤輸出的資料一起寫入同個檔案可以這樣寫：</span><br></pre></td></tr></table></figure>
-<p>ls no_file.txt &gt; ls.txt 2&gt;&amp;1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```2&gt;&amp;1```代表將**標準錯誤輸出**的資料導入**標準輸出**</span><br><span class="line">不要忘記```&gt;```預設為**正常輸出**。</span><br><span class="line">驗證：</span><br></pre></td></tr></table></figure>
-<p>ls no_file.txt &gt; ls.txt 2&gt;&amp;1<br>cat ls.txt<br>ls: cannot access no_file.txt: No such file or directory<br>touch no_file.txt<br>ls no_file.txt &gt; ls.txt 2&gt;&amp;1<br>cat ls.txt<br>no_file.txt</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">原先無```no_file.txt```此檔案，執行```ls```並將錯誤訊息寫入```ls.txt```，新增```no_file.txt```並再一次執行```ls```，可以看到輸出訊息有所變化且正常輸出與錯誤輸出資料都寫入```ls.txt```內。</span><br><span class="line"></span><br><span class="line">導向語法有許多組合，以下都可以達到將正常輸出與錯誤輸出寫入同一個檔案內。</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
-<p>ls no_file.txt 2&gt; ls.txt 1&gt;&amp;2<br>ls no_file.txt &gt;&amp; ls.txt<br>ls no_file.txt &amp;&gt; ls.txt</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```&gt;&amp;``` ```&amp;&gt;```為將所有輸出導向至檔案。</span><br><span class="line">實用例子：儲存iptables規則至檔案</span><br></pre></td></tr></table></figure>
-<p>iptables-save &gt; iptables.rule</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 標準輸入</span><br><span class="line">需要輸入資料的Linux程式若執行時沒有給予資料的話，預設將會從鍵盤讀取資料</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
-<p>cat<br>1<br>1<br>2<br>2</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用```&lt;```，將指定的檔案設定為程式的標準輸入</span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
-<p>cat &lt; ls.txt<br>no_file.txt</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 管線 pipe</span><br><span class="line">若要把兩個或以上的程式輸入出串連起來，可以使用```|```（pipe）。</span><br><span class="line">![](https://i.imgur.com/sN2gQjM.png)</span><br><span class="line">[Image Soruce：鳥哥的 Linux 私房菜 第十章、認識與學習BASH](http://linux.vbird.org/linux_basic/0320bash.php)</span><br><span class="line"></span><br><span class="line">Example：</span><br></pre></td></tr></table></figure>
-<p>ls | nl</p>
-<p>1 file1<br>2 file2<br>3 directory3</p>
-<p>```</p>
-<p><code>nl</code>為顯示行數的指令。<br>也就是 <code>ls</code>的輸出透過pipe成為了<code>nl</code>的輸入，達到了可顯示行數的<code>ls</code>功能。</p>
-<h2 id="dev-null"><a href="#dev-null" class="headerlink" title="/dev/null"></a>/dev/null</h2><p>-<br>一個類似垃圾桶的東西，若將輸出指向至此，則所有輸出將會被捨棄掉。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/linux-io-input-output-redirection-operators/">GTW-Linux I/O 輸入與輸出重新導向，基礎概念教學</a></p>
 
       
     </div>
